@@ -1,0 +1,216 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Product Management" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    :root {
+      --merchant-ink: #5f3b00;
+      --merchant-accent: #e6a23c;
+      --merchant-soft: #fff8e7;
+      --merchant-line: #f0dfba;
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #fff0bf 0%, #fff7e8 24%, #ffffff 60%);
+      color: var(--merchant-ink);
+    }
+    .shell {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .panel-box {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(173, 109, 22, 0.08);
+      padding: 24px;
+      border: 1px solid rgba(230, 162, 60, 0.14);
+    }
+    .hero-banner {
+      background: linear-gradient(135deg, #5f3b00 0%, #a66700 58%, #f0b44b 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 20px 45px rgba(104, 63, 0, 0.2);
+    }
+    .hero-banner .title,
+    .hero-banner .subtitle {
+      color: white;
+    }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .toolbar-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .gallery-preview {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .gallery-preview img {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .product-table td {
+      vertical-align: top;
+    }
+    .status-select select,
+    .panel-box .select select,
+    .panel-box .input,
+    .panel-box .textarea {
+      border-radius: 14px;
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    @media (max-width: 768px) {
+      .hero-banner {
+        padding: 22px;
+      }
+      .toolbar,
+      .toolbar-links {
+        align-items: stretch;
+      }
+      .toolbar > *,
+      .toolbar-links,
+      .toolbar-links > * {
+        width: 100%;
+      }
+      .toolbar-links .button,
+      .level-right .select,
+      .level-right select {
+        width: 100%;
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="merchant-nav-shell">
+      <div class="merchant-brand">
+        <span class="merchant-brand-kicker">{% trans "Merchant Workspace" %}</span>
+        <div class="merchant-brand-title">{% trans "Inventory Console" %}</div>
+        <div class="merchant-brand-subtitle">{% trans "Review products, adjust stock, and jump into editing from a cleaner inventory surface." %}</div>
+      </div>
+      <div class="merchant-nav-right">
+        <div class="merchant-nav-links">
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'manage' %} is-current{% endif %}" href="{% url 'shop:manage' %}">{% trans "Manage Products" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'manage_product_new' or request.resolver_match.url_name == 'manage_product_edit' %} is-current{% endif %}" href="{% url 'shop:manage_product_new' %}">{% trans "Add Product" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'merchant_orders' %} is-current{% endif %}" href="{% url 'shop:merchant_orders' %}">{% trans "Manage Orders" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+
+    <section class="hero-banner">
+      <p class="is-size-7 has-text-weight-semibold mb-2">{% trans "Manage Products" %}</p>
+      <h1 class="title is-3 mb-2">{% trans "Review every product in one dedicated inventory view." %}</h1>
+      <p class="subtitle is-6 mb-0">{% trans "Keep listing, stock, status, and edit actions separate from the editor so product operations stay easier to scan." %}</p>
+    </section>
+
+    {% include 'includes/message_stack.html' %}
+
+    <div class="panel-box">
+      <div class="level mb-4">
+        <div class="level-left">
+          <div>
+            <h2 class="title is-4 mb-1">{% trans "Current Products" %}</h2>
+            <p class="subtitle is-6 mb-0">{% trans "Edit each product in a separate workspace so inventory review stays focused." %}</p>
+          </div>
+        </div>
+        <div class="level-right">
+          <form method="get" class="is-flex" style="gap:10px; flex-wrap:wrap; align-items:center;">
+            <div class="select is-small">
+              <select name="sort" onchange="this.form.submit()">
+                {% for value, label in sort_options.items %}
+                  <option value="{{ value }}" {% if sort == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable product-table">
+          <thead>
+            <tr>
+              <th>{% trans "Product" %}</th>
+              <th>{% trans "Category" %}</th>
+              <th>{% trans "Price" %}</th>
+              <th>{% trans "Stock" %}</th>
+              <th>{% trans "Status" %}</th>
+              <th>{% trans "Actions" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+              <tr>
+                <td>
+                  <p class="has-text-weight-semibold mb-1">{{ product.name }}</p>
+                  <div class="gallery-preview">
+                    {% if product.primary_image_url %}<img src="{{ product.primary_image_url }}" alt="{{ product.name }}">{% endif %}
+                    {% for image in product.images.all|slice:':2' %}<img src="{{ image.image.url }}" alt="{{ product.name }} {{ forloop.counter }}">{% endfor %}
+                  </div>
+                </td>
+                <td>{% if product.category %}{{ product.category.name }}{% else %}{% trans "Uncategorized" %}{% endif %}</td>
+                <td>${{ product.price }}</td>
+                <td>{{ product.stock }}</td>
+                <td><span class="tag is-light">{{ product.get_status_display }}</span></td>
+                <td>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <a class="button is-small is-info is-light" href="{% url 'shop:manage_product_edit' product.id %}">{% trans "Edit" %}</a>
+                    <form action="{% url 'shop:toggle_product_status' product.id %}" method="post">
+                      {% csrf_token %}
+                      <div class="select is-small status-select">
+                        <select name="status" onchange="this.form.submit()">
+                          {% for value, label in product.STATUS_CHOICES %}
+                            <option value="{{ value }}" {% if product.status == value %}selected{% endif %}>{{ label }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="6">{% trans "No products created yet." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="pagination is-centered mt-5" role="navigation" aria-label="pagination">
+          {% if page_obj.has_previous %}
+            <a class="pagination-previous" href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+          {% endif %}
+          {% if page_obj.has_next %}
+            <a class="pagination-next" href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

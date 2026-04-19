@@ -1,0 +1,267 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "My Cart" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, #d8f3ff 0%, #eef9ff 24%, #ffffff 60%);
+    }
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .panel-box {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(9, 68, 90, 0.08);
+      padding: 24px;
+      border: 1px solid rgba(18, 56, 72, 0.08);
+    }
+    .hero-strip {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .hero-card,
+    .summary-card {
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 16px 40px rgba(9, 68, 90, 0.08);
+    }
+    .hero-card {
+      background: linear-gradient(135deg, #103645 0%, #1f6b86 62%, #85d8ff 100%);
+      color: white;
+    }
+    .hero-card .title,
+    .hero-card .subtitle {
+      color: white;
+    }
+    .summary-card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(18, 56, 72, 0.08);
+    }
+    .cart-table td {
+      vertical-align: middle;
+    }
+    .mini-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 1px solid #dbeff7;
+    }
+    .product-row {
+      display: flex;
+      align-items: center;
+    }
+    .qty-inline-form {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .qty-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: #f4fbff;
+      border: 1px solid #d9edf6;
+    }
+    .qty-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 0;
+      background: white;
+      color: #0f6c81;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .qty-number {
+      width: 56px;
+      border: 0;
+      box-shadow: none;
+      text-align: center;
+      background: transparent;
+    }
+    .empty-state {
+      padding: 34px 20px;
+      text-align: center;
+      border: 1px dashed #cfe6f0;
+      border-radius: 22px;
+      background: #f7fcff;
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    @media (max-width: 900px) {
+      .hero-strip {
+        grid-template-columns: 1fr;
+      }
+      .qty-inline-form {
+        align-items: flex-start;
+      }
+    }
+    @media (max-width: 768px) {
+      .product-row {
+        align-items: flex-start;
+      }
+      .mini-thumb {
+        width: 48px;
+        height: 48px;
+      }
+      .qty-inline-form,
+      .qty-pill {
+        width: 100%;
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="customer-nav-shell">
+      <div class="customer-brand">
+        <span class="customer-brand-kicker">{% trans "Customer Workspace" %}</span>
+        <div class="customer-brand-title">{% trans "My Cart" %}</div>
+        <div class="customer-brand-subtitle">{% trans "Review selected items, adjust quantities, and move into checkout with less friction." %}</div>
+      </div>
+      <div class="customer-nav-right">
+        <div class="customer-nav-links">
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'product_list' or request.resolver_match.url_name == 'product_detail' %} is-current{% endif %}" href="{% url 'shop:product_list' %}">{% trans "Catalog" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'cart' %} is-current{% endif %}" href="{% url 'shop:cart' %}">{% trans "My Cart" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'order' or request.resolver_match.url_name == 'order_detail' %} is-current{% endif %}" href="{% url 'shop:order' %}">{% trans "My Orders" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'account' %} is-current{% endif %}" href="{% url 'login:account' %}">{% trans "My Account" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+
+    {% include 'includes/message_stack.html' %}
+
+    <section class="hero-strip">
+      <div class="hero-card">
+        <p class="is-size-7 has-text-weight-semibold mb-2">{% trans "My Cart" %}</p>
+        <h1 class="title is-3 mb-2">{% trans "Tune quantities before checkout." %}</h1>
+        <p class="subtitle is-6 mb-0">{% trans "Update quantities inline, confirm totals instantly, and keep your preferred shipping address ready for checkout." %}</p>
+      </div>
+      <aside class="summary-card">
+        <p class="heading">{% trans "Cart Total" %}</p>
+        <p class="title is-3">${{ cart_total }}</p>
+        <p class="mb-0 has-text-grey">{% trans "Items in cart" %}: {{ cart_items|length }}</p>
+      </aside>
+    </section>
+
+    <div class="columns is-variable is-5">
+      <div class="column is-12-mobile is-8-tablet">
+        <div class="panel-box">
+          <h1 class="title is-3">{% trans "My Cart" %}</h1>
+          {% if cart_items %}
+            <div class="table-container">
+              <table class="table is-fullwidth is-hoverable cart-table">
+                <thead>
+                  <tr>
+                    <th>{% trans "Product" %}</th>
+                    <th>{% trans "Unit Price" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    <th>{% trans "Subtotal" %}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart_items %}
+                    <tr>
+                      <td>
+                        <div class="product-row">
+                          {% if item.product.primary_image_url %}<img class="mini-thumb" src="{{ item.product.primary_image_url }}" alt="{{ item.product.name }}">{% endif %}
+                          <div>
+                            <a href="{% url 'shop:product_detail' item.product.id %}">{{ item.product.name }}</a>
+                            <p class="is-size-7 has-text-grey">{% if item.product.category %}{{ item.product.category.name }}{% else %}{% trans "Uncategorized" %}{% endif %}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>${{ item.product.price }}</td>
+                      <td>
+                        <form action="{% url 'shop:update_cart_item' item.id %}" method="post" class="qty-inline-form">
+                          {% csrf_token %}
+                          <div class="qty-pill">
+                            <button class="qty-icon-btn" type="button" data-cart-action="decrease">−</button>
+                            <input class="input qty-number" type="number" min="1" max="{{ item.product.stock }}" name="quantity" value="{{ item.quantity }}">
+                            <button class="qty-icon-btn" type="button" data-cart-action="increase">+</button>
+                          </div>
+                          <button class="button is-small is-info" type="submit">{% trans "Update" %}</button>
+                        </form>
+                      </td>
+                      <td>${{ item.subtotal }}</td>
+                      <td>
+                        <form action="{% url 'shop:remove_cart_item' item.id %}" method="post">
+                          {% csrf_token %}
+                          <button class="button is-small is-danger is-light" type="submit">{% trans "Remove" %}</button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="empty-state">
+              <h2 class="title is-5 mb-2">{% trans "Your cart is empty." %}</h2>
+              <p class="has-text-grey mb-4">{% trans "Browse the catalog and add a few products to start your checkout flow." %}</p>
+              <a class="button is-info is-light" href="{% url 'shop:product_list' %}">{% trans "Continue Shopping" %}</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="column is-12-mobile is-4-tablet">
+        <div class="panel-box">
+          <h2 class="title is-4">{% trans "Checkout" %}</h2>
+          <p class="mb-4"><strong>{% trans "Cart Total" %}:</strong> ${{ cart_total }}</p>
+          <form action="{% url 'shop:checkout' %}" method="post">
+            {% csrf_token %}
+            {% for field in checkout_form %}
+              <div class="field">
+                <label class="label">{{ field.label }}</label>
+                <div class="control">{{ field }}</div>
+              </div>
+            {% endfor %}
+            <button class="button is-dark is-fullwidth" type="submit" {% if not cart_items %}disabled{% endif %}>{% trans "Place Order" %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.qty-inline-form').forEach(function (form) {
+      const input = form.querySelector('input[name="quantity"]');
+      if (!input) {
+        return;
+      }
+      form.querySelectorAll('[data-cart-action]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const min = Number(input.min || 1);
+          const max = Number(input.max || 9999);
+          const current = Number(input.value || min);
+          const next = button.dataset.cartAction === 'increase' ? current + 1 : current - 1;
+          input.value = Math.min(max, Math.max(min, next));
+        });
+      });
+    });
+  </script>
+</body>
+</html>

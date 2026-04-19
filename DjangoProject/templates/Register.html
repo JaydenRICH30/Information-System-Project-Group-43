@@ -1,0 +1,213 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{% trans "Register" %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233399ff'/%3E%3Cpath d='M18 24h28l-3 16H21z' fill='white'/%3E%3Ccircle cx='27' cy='46' r='3' fill='white'/%3E%3Ccircle cx='39' cy='46' r='3' fill='white'/%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #b3dcff, #ffffff);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      font-family: "Segoe UI", sans-serif;
+      font-size: 16px;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.1;
+      background-image: url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066cc'%3E%3Cpath d='M45 70h90l-10 50H55z'/%3E%3Ccircle cx='70' cy='130' r='8'/%3E%3Ccircle cx='110' cy='130' r='8'/%3E%3Cpath d='M40 65h18l10-18h55l10 18h18'/%3E%3Crect x='60' y='25' width='60' height='25' rx='6'/%3E%3Ctext x='90' y='42' font-size='12' text-anchor='middle' fill='white'%3ESALE%3C/text%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 180px;
+    }
+
+    .register-card {
+      width: 420px;
+      padding: 35px 30px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #999;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #3399ff;
+      transform: scale(1.2);
+    }
+
+    .title {
+      font-size: 26px !important;
+      font-weight: 700;
+      margin-bottom: 25px !important;
+      text-align: center;
+    }
+
+    .label {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .input,
+    .select select,
+    .textarea {
+      border-radius: 12px;
+      font-size: 15px;
+      min-height: 45px;
+    }
+
+    .textarea {
+      padding: 10px;
+    }
+
+    .button.is-primary {
+      background-color: #3399ff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      height: 45px;
+      transition: 0.3s ease;
+    }
+
+    .button.is-primary:hover {
+      background-color: #1f7ae0;
+      transform: translateY(-1px);
+    }
+
+    .login-link {
+      font-size: 14px;
+      color: #3399ff;
+      text-decoration: none;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+    .message-stack {
+      margin-bottom: 18px;
+    }
+
+    .field-error {
+      color: #d33c54;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .card-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .auth-note {
+      display: none;
+    }
+
+    .subtitle-copy {
+      text-align: center;
+      color: #5f6b7a;
+      margin-top: -12px;
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="register-card">
+
+  <div class="card-topbar">
+    {% include 'includes/language_switch.html' %}
+    <div class="close-btn" onclick="goHome()">×</div>
+  </div>
+
+  <h1 class="title">{% trans "Create Account" %}</h1>
+  <p class="subtitle-copy">{% trans "Create your customer or merchant account in a minute." %}</p>
+
+  {% include 'includes/message_stack.html' %}
+
+  <form id="registerForm" method="POST" action="{% url 'login:register' %}" novalidate>
+      {% csrf_token %}
+    <div class="field">
+      <label class="label">{% trans "Full Name" %}</label>
+      {{ form.username }}
+      {% for error in form.username.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    <div class="field">
+      <label class="label">{% trans "Email Address" %}</label>
+      {{ form.email }}
+      {% for error in form.email.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    <div class="field">
+      <label class="label">{% trans "Password" %}</label>
+      {{ form.password }}
+      {% for error in form.password.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    <div class="field">
+      <label class="label">{% trans "Role" %}</label>
+      <div class="select is-fullwidth">{{ form.role }}</div>
+      {% for error in form.role.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    <div class="field">
+      <label class="label">{% trans "Shipping Address" %}</label>
+      {{ form.address }}
+      {% for error in form.address.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    {% for error in form.non_field_errors %}<p class="field-error mb-3">{{ error }}</p>{% endfor %}
+
+    <div class="field mt-5">
+      <button class="button is-primary is-fullwidth" type="submit" id="submitBtn">
+        {% trans "Create Account" %}
+      </button>
+    </div>
+
+  </form>
+
+  <div class="has-text-centered mt-4">
+    <a href="{% url 'login:login' %}" class="login-link">
+      {% trans "Already have an account? Sign in" %}
+    </a>
+  </div>
+
+</div>
+
+<script>
+function goHome() {
+  window.location.href = "{% url 'login:login' %}";
+}
+</script>
+
+</body>
+</html>

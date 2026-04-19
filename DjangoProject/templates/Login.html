@@ -1,0 +1,208 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+<meta charset="UTF-8">
+<title>{% trans "Login" %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233399ff'/%3E%3Cpath d='M18 24h28l-3 16H21z' fill='white'/%3E%3Ccircle cx='27' cy='46' r='3' fill='white'/%3E%3Ccircle cx='39' cy='46' r='3' fill='white'/%3E%3C/svg%3E">
+
+<link rel="stylesheet"
+href="{% static 'css/bulma.min.css' %}">
+
+<style>
+body {
+  background: linear-gradient(135deg, #b3dcff, #ffffff);
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 18px;
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230066cc'%3E%3Cpath d='M45 70h90l-10 50H55z'/%3E%3Ccircle cx='70' cy='130' r='8'/%3E%3Ccircle cx='110' cy='130' r='8'/%3E%3Cpath d='M40 65h18l10-18h55l10 18h18'/%3E%3Crect x='60' y='25' width='60' height='25' rx='6'/%3E%3Ctext x='90' y='42' font-size='14' text-anchor='middle' fill='white'%3ESALE%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px;
+}
+
+.login-card {
+  width: 500px;
+  padding: 50px 45px;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+  position: relative;
+  z-index: 1;
+}
+
+.close-btn{
+  position:absolute;
+  top:18px;
+  right:20px;
+  font-size:24px;
+  font-weight:bold;
+  color:#999;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.close-btn:hover{
+  color:#3399ff;
+  transform:scale(1.2);
+}
+
+.title {
+  font-size: 32px !important;
+  font-weight: 700;
+  margin-bottom: 35px !important;
+  text-align: center;
+}
+
+.label {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.input {
+  border-radius: 14px;
+  font-size: 17px;
+  height: 55px;
+}
+
+.button.is-primary {
+  background-color: #3399ff;
+  border: none;
+  border-radius: 14px;
+  font-size: 18px;
+  height: 55px;
+  transition: 0.3s ease;
+}
+
+.button.is-primary:hover {
+  background-color: #1f7ae0;
+  transform: translateY(-2px);
+}
+
+.register-link {
+  font-size: 16px;
+  color: #3399ff;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+.message-stack {
+  margin-bottom: 18px;
+}
+
+.field-error {
+  color: #d33c54;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.demo-box {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: #f2f8ff;
+  border-radius: 14px;
+  font-size: 14px;
+}
+
+.card-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.auth-note {
+  display: none;
+}
+
+.subtitle-copy {
+  text-align: center;
+  color: #5f6b7a;
+  margin-top: -18px;
+  margin-bottom: 26px;
+  font-size: 15px;
+}
+</style>
+</head>
+
+<body>
+<div class="login-card">
+
+  <div class="card-topbar">
+    {% include 'includes/language_switch.html' %}
+    <div class="close-btn" onclick="goHome()">×</div>
+  </div>
+
+  <h1 class="title">{% trans "Welcome back" %}</h1>
+  <p class="subtitle-copy">{% trans "Sign in to manage your cart, orders, and account." %}</p>
+
+  {% include 'includes/message_stack.html' %}
+
+  <form id="loginForm" method="post" action="{% url 'login:login' %}" novalidate>
+      {% csrf_token %}
+    <div class="field">
+      <label class="label">{% trans "Email Address" %}</label>
+      <div class="control">
+          {{ form.email }}
+      </div>
+      {% for error in form.email.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    <div class="field">
+      <label class="label">{% trans "Password" %}</label>
+      <div class="control">
+        {{ form.password }}
+      </div>
+      {% for error in form.password.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    {% for error in form.non_field_errors %}<p class="field-error mb-3">{{ error }}</p>{% endfor %}
+
+    <div class="field mt-6">
+      <button class="button is-primary is-fullwidth" type="submit">
+        {% trans "Sign In" %}
+      </button>
+    </div>
+
+  </form>
+
+  <div class="has-text-centered mt-5">
+    <a href="{% url 'login:register' %}" class="register-link">
+      {% trans "Don’t have an account? Create one" %}
+    </a>
+  </div>
+
+  <div class="demo-box">
+    <strong>{% trans "Demo Accounts" %}</strong><br>
+    {% trans "Customer" %}: customer.demo@example.com / DemoPass123<br>
+    {% trans "Merchant" %}: merchant.demo@example.com / DemoPass123
+  </div>
+
+</div>
+
+<script>
+function goHome() {
+  window.location.href = "{% url 'login:login' %}";
+}
+</script>
+
+</body>
+</html>

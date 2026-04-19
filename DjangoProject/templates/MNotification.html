@@ -1,0 +1,142 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Merchant Notifications" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #fff0bf 0%, #fff7e8 24%, #ffffff 60%);
+    }
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .toolbar-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero-box {
+      background: linear-gradient(135deg, #5f3b00 0%, #a66700 58%, #f0b44b 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 20px 45px rgba(104, 63, 0, 0.2);
+    }
+    .hero-box .title,
+    .hero-box .subtitle {
+      color: white;
+    }
+    .notification-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(173, 109, 22, 0.08);
+      padding: 18px;
+      margin-bottom: 14px;
+      border-left: 5px solid #efb447;
+    }
+    .notification-card.is-read {
+      opacity: 0.76;
+      border-left-color: #d7d7d7;
+    }
+    .notification-meta {
+      align-items: flex-start;
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    @media (max-width: 768px) {
+      .toolbar,
+      .toolbar-links {
+        align-items: stretch;
+      }
+      .toolbar > *,
+      .toolbar-links,
+      .toolbar-links > * {
+        width: 100%;
+      }
+      .toolbar-links .button {
+        justify-content: center;
+      }
+      .notification-meta {
+        display: block;
+      }
+      .notification-meta .level-right {
+        margin-top: 8px;
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="merchant-nav-shell">
+      <div class="merchant-brand">
+        <span class="merchant-brand-kicker">{% trans "Merchant Workspace" %}</span>
+        <div class="merchant-brand-title">{% trans "Notification Inbox" %}</div>
+        <div class="merchant-brand-subtitle">{% trans "Track reviews, orders, and merchant-side follow-ups without leaving the workspace." %}</div>
+      </div>
+      <div class="merchant-nav-right">
+        <div class="merchant-nav-links">
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'manage' %} is-current{% endif %}" href="{% url 'shop:manage' %}">{% trans "Manage Products" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'merchant_orders' %} is-current{% endif %}" href="{% url 'shop:merchant_orders' %}">{% trans "Manage Orders" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+    <section class="hero-box">
+      <h1 class="title is-3 mb-2">{% trans "Merchant Notifications" %}</h1>
+      <p class="subtitle is-6 mb-0">{% trans "Stay on top of new orders, reviews, and stock-related updates from one merchant inbox." %}</p>
+    </section>
+    {% for notification in notifications %}
+      <div class="notification-card {% if notification.is_read %}is-read{% endif %}">
+        <div class="level is-mobile notification-meta mb-2">
+          <div class="level-left"><strong>{{ notification.title }}</strong></div>
+          <div class="level-right"><span class="tag is-warning is-light">{{ notification.get_kind_display }}</span></div>
+        </div>
+        <p class="mb-2">{{ notification.message }}</p>
+        <p class="is-size-7 has-text-grey mb-3">{{ notification.created_at|date:"DATETIME_FORMAT" }}</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          {% if notification.link %}
+            <a class="button is-small is-warning is-light" href="{{ notification.link }}">{% trans "Open" %}</a>
+          {% endif %}
+          {% if not notification.is_read %}
+            <form action="{% url 'shop:notification_action' notification.id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="read">
+              <button class="button is-small is-info is-light" type="submit">{% trans "Mark as Read" %}</button>
+            </form>
+          {% endif %}
+          <form action="{% url 'shop:notification_action' notification.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="delete">
+            <button class="button is-small is-danger is-light" type="submit">{% trans "Delete" %}</button>
+          </form>
+        </div>
+      </div>
+    {% empty %}
+      <article class="message is-light"><div class="message-body">{% trans "No notifications yet." %}</div></article>
+    {% endfor %}
+  </div>
+</body>
+</html>

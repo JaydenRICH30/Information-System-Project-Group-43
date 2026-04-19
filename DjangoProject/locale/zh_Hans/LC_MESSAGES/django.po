@@ -1,0 +1,1062 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: DjangoProject\n"
+"POT-Creation-Date: 2026-04-14 00:00+0000\n"
+"PO-Revision-Date: 2026-04-14 00:00+0000\n"
+"Last-Translator: GitHub Copilot\n"
+"Language: zh_Hans\n"
+"Language-Team: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Customer Dashboard"
+msgstr "顾客首页"
+
+msgid "Welcome back"
+msgstr "欢迎回来"
+
+msgid "Browse products, manage your cart, and keep track of orders."
+msgstr "浏览商品、管理购物车，并跟踪订单状态。"
+
+msgid "Notifications"
+msgstr "通知"
+
+msgid "My Cart"
+msgstr "我的购物车"
+
+msgid "My Orders"
+msgstr "我的订单"
+
+msgid "My Account"
+msgstr "我的账户"
+
+msgid "Profile Details"
+msgstr "资料详情"
+
+msgid "Save Profile"
+msgstr "保存资料"
+
+msgid "Change Password"
+msgstr "修改密码"
+
+msgid "Update Password"
+msgstr "更新密码"
+
+msgid "Log out"
+msgstr "退出登录"
+
+msgid "SHOPPING FLOW"
+msgstr "购物流程"
+
+msgid "Search, filter, cart, checkout, and review in one place."
+msgstr "搜索、筛选、加购、下单和评价都集中在一个入口。"
+
+msgid "The catalog supports category, tag, and price filtering, while product pages include rich descriptions, gallery images, and related recommendations."
+msgstr "商品目录支持分类、标签和价格区间筛选，详情页提供富文本描述、多图展示和相关推荐。"
+
+msgid "Search products or tags"
+msgstr "搜索商品或标签"
+
+msgid "Open Catalog"
+msgstr "进入商品目录"
+
+msgid "Unread Notifications"
+msgstr "未读通知"
+
+msgid "Recent Orders"
+msgstr "最近订单"
+
+msgid "Latest Orders"
+msgstr "最新订单"
+
+msgid "Go to page %(page_number)s"
+msgstr "前往第 %(page_number)s 页"
+
+msgid "Loading more products as you scroll..."
+msgstr "下滑中，正在加载更多商品..."
+
+msgid "You have reached the end of the product list."
+msgstr "已经滑到底部，没有更多商品了。"
+
+msgid "Could not load more products. Please refresh and try again."
+msgstr "加载更多商品失败，请刷新后重试。"
+
+msgid "Order"
+msgstr "订单"
+
+msgid "Created"
+msgstr "创建时间"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Amount"
+msgstr "金额"
+
+msgid "No orders yet."
+msgstr "还没有订单。"
+
+msgid "Uncategorized"
+msgstr "未分类"
+
+msgid "Rating"
+msgstr "评分"
+
+msgid "Product Catalog"
+msgstr "商品目录"
+
+msgid "Catalog"
+msgstr "商品目录"
+
+msgid "Filter by category, price range, and tags."
+msgstr "按分类、价格区间和标签筛选商品。"
+
+msgid "Dashboard"
+msgstr "仪表盘"
+
+msgid "Cart"
+msgstr "购物车"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Name, description, tag"
+msgstr "名称、描述、标签"
+
+msgid "Category"
+msgstr "分类"
+
+msgid "All categories"
+msgstr "全部分类"
+
+msgid "Tag"
+msgstr "标签"
+
+msgid "Example: eco"
+msgstr "例如：eco"
+
+msgid "Min Price"
+msgstr "最低价"
+
+msgid "Max Price"
+msgstr "最高价"
+
+msgid "Apply Filters"
+msgstr "应用筛选"
+
+msgid "Reset"
+msgstr "重置"
+
+msgid "Popular Tags"
+msgstr "热门标签"
+
+msgid "products found"
+msgstr "个商品"
+
+msgid "In Stock"
+msgstr "有库存"
+
+msgid "Out of Stock"
+msgstr "缺货"
+
+msgid "No products match the current filters."
+msgstr "当前筛选条件下没有匹配商品。"
+
+msgid "Back to Catalog"
+msgstr "返回商品目录"
+
+msgid "Stock"
+msgstr "库存"
+
+msgid "Add to Cart"
+msgstr "加入购物车"
+
+msgid "Customer Reviews"
+msgstr "用户评价"
+
+msgid "No reviews yet."
+msgstr "还没有评价。"
+
+msgid "Write a Review"
+msgstr "写评价"
+
+msgid "Update Review"
+msgstr "更新评价"
+
+msgid "Submit Review"
+msgstr "提交评价"
+
+msgid "Only customers who completed a delivered order can review this product."
+msgstr "只有完成收货的顾客才能评价该商品。"
+
+msgid "Log in as a customer to review purchased products."
+msgstr "请以顾客身份登录后评价已购买商品。"
+
+msgid "Related Products"
+msgstr "相关商品"
+
+msgid "No related products yet."
+msgstr "暂时没有相关商品。"
+
+msgid "Continue Shopping"
+msgstr "继续购物"
+
+msgid "Product"
+msgstr "商品"
+
+msgid "Unit Price"
+msgstr "单价"
+
+msgid "Quantity"
+msgstr "数量"
+
+msgid "Subtotal"
+msgstr "小计"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Remove"
+msgstr "移除"
+
+msgid "Your cart is empty."
+msgstr "购物车为空。"
+
+msgid "Checkout"
+msgstr "结账"
+
+msgid "Cart Total"
+msgstr "购物车总额"
+
+msgid "Place Order"
+msgstr "提交订单"
+
+msgid "Last Update"
+msgstr "最近更新时间"
+
+msgid "Shipping Address"
+msgstr "收货地址"
+
+msgid "Status Timeline"
+msgstr "状态时间线"
+
+msgid "No status changes yet."
+msgstr "还没有状态变更记录。"
+
+msgid "You have not placed any orders yet."
+msgstr "你还没有下过单。"
+
+msgid "Open"
+msgstr "打开"
+
+msgid "Mark as Read"
+msgstr "标记为已读"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "You do not have any notifications."
+msgstr "你目前没有任何通知。"
+
+msgid "Merchant Dashboard"
+msgstr "商家首页"
+
+msgid "Manage products, process orders, and monitor notifications."
+msgstr "管理商品、处理订单，并查看通知。"
+
+msgid "Account"
+msgstr "账户"
+
+msgid "Active Products"
+msgstr "上架商品数"
+
+msgid "Open Orders"
+msgstr "待处理订单数"
+
+msgid "Operations"
+msgstr "操作区"
+
+msgid "Manage Products"
+msgstr "商品管理"
+
+msgid "Manage Orders"
+msgstr "订单管理"
+
+msgid "No products yet. Start by adding your first product."
+msgstr "还没有商品，先创建第一个商品吧。"
+
+msgid "Product Management"
+msgstr "商品管理"
+
+msgid "Edit Product"
+msgstr "编辑商品"
+
+msgid "Add Product"
+msgstr "新增商品"
+
+msgid "Save Product"
+msgstr "保存商品"
+
+msgid "Cancel Edit"
+msgstr "取消编辑"
+
+msgid "Current Products"
+msgstr "当前商品"
+
+msgid "Price"
+msgstr "价格"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "No products created yet."
+msgstr "还没有创建任何商品。"
+
+msgid "Orders Management"
+msgstr "订单管理"
+
+msgid "Order id, customer name, email"
+msgstr "订单号、顾客名、邮箱"
+
+msgid "All statuses"
+msgstr "全部状态"
+
+msgid "Filter Orders"
+msgstr "筛选订单"
+
+msgid "Customer"
+msgstr "顾客"
+
+msgid "Address"
+msgstr "地址"
+
+msgid "Last Status Update"
+msgstr "最近状态更新时间"
+
+msgid "Total"
+msgstr "总额"
+
+msgid "Current Status"
+msgstr "当前状态"
+
+msgid "Workflow"
+msgstr "流转规则"
+
+msgid "Pending → Hold/Shipped/Cancelled, Hold → Pending/Shipped/Cancelled, Shipped → Delivered"
+msgstr "待处理 → 挂起/已发货/已取消，挂起 → 待处理/已发货/已取消，已发货 → 已送达"
+
+msgid "Next Status"
+msgstr "下一状态"
+
+msgid "Update Status"
+msgstr "更新状态"
+
+msgid "This order is already in a terminal state."
+msgstr "该订单已经处于终态。"
+
+msgid "Timestamps"
+msgstr "时间戳"
+
+msgid "Shipped"
+msgstr "已发货"
+
+msgid "Held"
+msgstr "已挂起"
+
+msgid "Cancelled"
+msgstr "已取消"
+
+msgid "Delivered"
+msgstr "已送达"
+
+msgid "No orders match the current filters."
+msgstr "当前筛选条件下没有匹配订单。"
+
+msgid "Merchant Notifications"
+msgstr "商家通知"
+
+msgid "No notifications yet."
+msgstr "暂时没有通知。"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Login"
+msgstr "登录"
+
+msgid "Register"
+msgstr "注册"
+
+msgid "Welcome!"
+msgstr "欢迎回来！"
+
+msgid "Sign in to manage your cart, orders, and account."
+msgstr "登录后即可管理购物车、订单和账户。"
+
+msgid "Sign In"
+msgstr "登录"
+
+msgid "Create Account"
+msgstr "创建账户"
+
+msgid "Don’t have an account? Create one"
+msgstr "还没有账户？立即创建"
+
+msgid "Create your customer or merchant account in a minute."
+msgstr "一分钟内创建顾客或商家账户。"
+
+msgid "Already have an account? Sign in"
+msgstr "已有账户？去登录"
+
+msgid "Full Name"
+msgstr "姓名"
+
+msgid "Email Address"
+msgstr "邮箱地址"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Role"
+msgstr "角色"
+
+msgid "Already have an account? Login"
+msgstr "已有账户？去登录"
+
+msgid "Don’t have an account? Register"
+msgstr "还没有账户？去注册"
+
+msgid "Demo Accounts"
+msgstr "演示账户"
+
+msgid "Merchant"
+msgstr "商家"
+
+msgid "Products"
+msgstr "商品数"
+
+msgid "Orders"
+msgstr "订单数"
+
+msgid "The email or password is incorrect. Please try again."
+msgstr "邮箱或密码错误，请重试。"
+
+msgid "Please correct the highlighted fields before continuing."
+msgstr "请先修正高亮字段后再继续。"
+
+msgid "Registration successful. You can now log in."
+msgstr "注册成功，现在可以登录了。"
+
+msgid "Registration failed. Please review the form and fix the errors."
+msgstr "注册失败，请检查表单并修正错误。"
+
+msgid "Account details updated."
+msgstr "账户资料已更新。"
+
+msgid "Please correct the account form errors."
+msgstr "请修正账户资料表单中的错误。"
+
+msgid "Password updated. Please log in again."
+msgstr "密码已更新，请重新登录。"
+
+msgid "Please correct the password form errors."
+msgstr "请修正密码表单中的错误。"
+
+msgid "Enter your full name"
+msgstr "请输入你的姓名"
+
+msgid "Please enter a username"
+msgstr "请输入用户名"
+
+msgid "username cannot be more than 20 characters"
+msgstr "用户名不能超过 20 个字符"
+
+msgid "username cannot be less than 4 characters"
+msgstr "用户名不能少于 4 个字符"
+
+msgid "Enter your email"
+msgstr "请输入你的邮箱"
+
+msgid "Please enter a valid email address"
+msgstr "请输入有效的邮箱地址"
+
+msgid "Use at least 8 characters"
+msgstr "至少使用 8 个字符"
+
+msgid "Please enter a password"
+msgstr "请输入密码"
+
+msgid "Enter your shipping address"
+msgstr "请输入你的收货地址"
+
+msgid "Please enter a valid address"
+msgstr "请输入有效地址"
+
+msgid "Email already exists"
+msgstr "该邮箱已存在"
+
+msgid "Enter your password"
+msgstr "请输入你的密码"
+
+msgid "Current password is incorrect"
+msgstr "当前密码不正确"
+
+msgid "New passwords do not match"
+msgstr "两次输入的新密码不一致"
+
+msgid "Vendor"
+msgstr "商家"
+
+msgid "Active"
+msgstr "上架中"
+
+msgid "Draft"
+msgstr "草稿"
+
+msgid "Archived"
+msgstr "已归档"
+
+msgid "Pending"
+msgstr "待处理"
+
+msgid "Hold"
+msgstr "挂起"
+
+msgid "Returned"
+msgstr "已退回"
+
+msgid "System"
+msgstr "系统"
+
+msgid "Review"
+msgstr "评价"
+
+msgid "Inventory"
+msgstr "库存"
+
+msgid "Tags"
+msgstr "标签"
+
+msgid "Comma separated tags"
+msgstr "用英文逗号分隔多个标签"
+
+msgid "Example: eco, gift, home"
+msgstr "例如：环保, 礼物, 家居"
+
+msgid "Gallery Images"
+msgstr "商品图集"
+
+msgid "You can select multiple images at once."
+msgstr "可以一次选择多张图片。"
+
+msgid "Product Name"
+msgstr "商品名称"
+
+msgid "Cover Image"
+msgstr "封面图"
+
+msgid "Product Description"
+msgstr "商品文案"
+
+msgid "Description"
+msgstr "商品描述"
+
+msgid "Write plain copy for customers. Line breaks will be preserved on the product page."
+msgstr "直接填写给顾客阅读的文案即可，商品详情页会保留换行。"
+
+msgid "Name your product"
+msgstr "给商品起一个清晰的名字"
+
+msgid "Write the story, highlights, materials, and usage scenarios in plain language"
+msgstr "用自然语言写出商品故事、亮点、材质和使用场景"
+
+msgid "Describe the highlights, materials, and usage scenarios"
+msgstr "描述商品亮点、材质和使用场景"
+
+msgid "Select a category"
+msgstr "选择分类"
+
+msgid "Choose a cover image"
+msgstr "选择封面图"
+
+msgid "Choose gallery images"
+msgstr "选择商品图集"
+
+msgid "PNG, JPG, or WEBP. One image for the main product card."
+msgstr "支持 PNG、JPG、WEBP，用一张主图展示商品封面。"
+
+msgid "Upload multiple images to show angles, details, and context."
+msgstr "上传多张图片，展示角度、细节和使用场景。"
+
+msgid "Browse Files"
+msgstr "选择文件"
+
+msgid "No file selected yet."
+msgstr "暂未选择文件。"
+
+msgid "%(count)s files selected"
+msgstr "已选择 %(count)s 个文件"
+
+msgid "Comment"
+msgstr "评论内容"
+
+msgid "Share your experience"
+msgstr "分享你的使用体验"
+
+msgid "Merchant access required"
+msgstr "需要商家权限"
+
+msgid "Only customers who completed a purchase can review this product."
+msgstr "只有完成购买的顾客才能评价该商品。"
+
+msgid "New review for %(product)s"
+msgstr "%(product)s 收到新评价"
+
+msgid "%(user)s left a %(rating)s-star review."
+msgstr "%(user)s 留下了 %(rating)s 星评价。"
+
+msgid "Your review was saved."
+msgstr "你的评价已保存。"
+
+msgid "Please correct the review form."
+msgstr "请修正评价表单中的错误。"
+
+msgid "Only customer accounts can add products to cart."
+msgstr "只有顾客账户可以加入购物车。"
+
+msgid "%(product)s was added to your cart."
+msgstr "%(product)s 已加入购物车。"
+
+msgid "Quantity exceeds available stock."
+msgstr "数量超过可用库存。"
+
+msgid "Cart updated."
+msgstr "购物车已更新。"
+
+msgid "Item removed from cart."
+msgstr "商品已从购物车移除。"
+
+msgid "Please provide a valid shipping address."
+msgstr "请提供有效的收货地址。"
+
+msgid "%(product)s does not have enough stock."
+msgstr "%(product)s 库存不足。"
+
+msgid "New order #%(order_id)s"
+msgstr "新订单 #%(order_id)s"
+
+msgid "A new order contains one or more of your products."
+msgstr "有一笔新订单包含了你的商品。"
+
+msgid "Order #%(order_id)s created"
+msgstr "订单 #%(order_id)s 已创建"
+
+msgid "Your order is pending and waiting for merchant processing."
+msgstr "你的订单已进入待处理状态，正在等待商家处理。"
+
+msgid "Checkout completed. Order #%(order_id)s has been created."
+msgstr "结账完成，订单 #%(order_id)s 已创建。"
+
+msgid "Product saved."
+msgstr "商品已保存。"
+
+msgid "Please correct the product form."
+msgstr "请修正商品表单中的错误。"
+
+msgid "Invalid status"
+msgstr "无效状态"
+
+msgid "Product status updated."
+msgstr "商品状态已更新。"
+
+msgid "Use rich text to format highlights, lists, and links. The product detail page will show the same layout."
+msgstr "可使用富文本排版亮点、列表和链接，商品详情页会同步展示相同布局。"
+
+msgid "Write the story, highlights, materials, and usage scenarios with rich text"
+msgstr "用富文本编辑商品故事、亮点、材质和使用场景"
+
+msgid "Please add a product description."
+msgstr "请填写商品文案。"
+
+msgid "Order does not belong to this merchant"
+msgstr "该订单不属于当前商家。"
+
+msgid "Order #%(order_id)s updated"
+msgstr "订单 #%(order_id)s 已更新"
+
+msgid "Your order status changed to %(status)s."
+msgstr "你的订单状态已更新为 %(status)s。"
+
+msgid "Order status updated."
+msgstr "订单状态已更新。"
+
+msgid "Invalid action"
+msgstr "无效操作"
+
+msgid "Create polished product listings faster."
+msgstr "更快创建更精致的商品页面。"
+
+msgid "Review every product in one dedicated inventory view."
+msgstr "在独立库存视图中集中查看全部商品。"
+
+msgid "Keep listing, stock, status, and edit actions separate from the editor so product operations stay easier to scan."
+msgstr "将商品列表、库存、状态和编辑动作与编辑器分开，让商品管理更易浏览。"
+
+msgid "Merchant Workspace"
+msgstr "商家工作台"
+
+msgid "Inventory Console"
+msgstr "库存控制台"
+
+msgid "Review products, adjust stock, and jump into editing from a cleaner inventory surface."
+msgstr "在更清爽的库存界面中查看商品、调整库存并快速进入编辑。"
+
+msgid "Orders Console"
+msgstr "订单控制台"
+
+msgid "Work through triage, status updates, and customer context from one command surface."
+msgstr "在一个统一工作台中处理订单分流、状态更新和顾客上下文。"
+
+msgid "Order Filters"
+msgstr "订单筛选"
+
+msgid "Search by order id or customer identity, then narrow by status and sort without pushing the action button out of the panel."
+msgstr "按订单号或顾客身份搜索，再用状态和排序缩小范围，同时保持操作按钮留在筛选面板内部。"
+
+msgid "Result Scope"
+msgstr "结果范围"
+
+msgid "Merchant-owned order lines only"
+msgstr "仅显示属于当前商家的订单商品项"
+
+msgid "Choose the next step from the controlled workflow on the right. This keeps customer communication and operational timestamps aligned."
+msgstr "从右侧受控流程中选择下一步，以保持顾客通知和运营时间戳一致。"
+
+msgid "Product Studio"
+msgstr "商品编辑台"
+
+msgid "Shape copy, media, and publish settings in one polished drafting environment."
+msgstr "在一个更精致的编辑环境中统一处理文案、图片和发布设置。"
+
+msgid "Product Overview"
+msgstr "商品概览"
+
+msgid "Name, category, and selling story"
+msgstr "名称、分类与卖点故事"
+
+msgid "Start with the essentials, then write the formatted product narrative customers will see on the detail page."
+msgstr "先填写基础信息，再编写顾客会在详情页看到的富文本商品介绍。"
+
+msgid "Publishing Setup"
+msgstr "发布设置"
+
+msgid "Price, inventory, and live status"
+msgstr "价格、库存与上架状态"
+
+msgid "Decide how the product should be priced, how much stock is available, and whether it is ready for customers."
+msgstr "决定商品定价、可售库存，以及是否已准备好面向顾客展示。"
+
+msgid "Visual Assets"
+msgstr "视觉素材"
+
+msgid "Cover and gallery uploads"
+msgstr "封面与图集上传"
+
+msgid "Use a strong lead image for cards, then add supporting gallery shots for detail views and customer confidence."
+msgstr "先用一张强主图支撑卡片展示，再补充细节图集提升详情页说服力。"
+
+msgid "Publishing Checklist"
+msgstr "发布检查单"
+
+msgid "Before you save"
+msgstr "保存前检查"
+
+msgid "Use this quick checklist to make the product card, list view, and detail page feel complete on first publish."
+msgstr "用这份快速检查单，确保商品卡片、列表页和详情页在首次发布时就足够完整。"
+
+msgid "Lead with a clear product name and category so cards scan quickly."
+msgstr "先确保商品名称和分类清晰，让列表卡片更容易被快速扫读。"
+
+msgid "Add one strong cover image and multiple gallery shots for trust."
+msgstr "准备一张强封面图和多张图集图片，提升顾客信任感。"
+
+msgid "Use short paragraphs and lists in the rich text area for readability."
+msgstr "在富文本区域使用短段落和列表，提升阅读体验。"
+
+msgid "Double-check price, stock, and status before you publish."
+msgstr "发布前再次核对价格、库存和状态。"
+
+msgid "Save or continue drafting"
+msgstr "保存或继续起草"
+
+msgid "Publish changes now, or save this product and immediately start drafting the next listing."
+msgstr "现在就保存变更，或保存当前商品后立刻开始下一条商品草稿。"
+
+msgid "Notification Inbox"
+msgstr "通知收件箱"
+
+msgid "Track reviews, orders, and merchant-side follow-ups without leaving the workspace."
+msgstr "无需离开工作区，就能跟进评价、订单和商家侧后续动作。"
+
+msgid "Customer Workspace"
+msgstr "顾客工作台"
+
+msgid "Review product details, media, and purchase options from one focused view."
+msgstr "在一个更专注的视图中查看商品详情、图片和购买选项。"
+
+msgid "Review selected items, adjust quantities, and move into checkout with less friction."
+msgstr "查看已选商品、调整数量，并更顺畅地进入结账流程。"
+
+msgid "Order Center"
+msgstr "订单中心"
+
+msgid "Track every purchase, review totals, and follow status changes from one timeline-driven space."
+msgstr "在同一个时间线视图中跟踪每笔购买、查看总额并关注状态变化。"
+
+msgid "Customer Inbox"
+msgstr "顾客通知中心"
+
+msgid "Order Summary"
+msgstr "订单摘要"
+
+msgid "Account Center"
+msgstr "账户中心"
+
+msgid "Update your merchant profile, credentials, and workspace identity from one place."
+msgstr "在一个地方更新商家资料、登录凭据和工作区身份信息。"
+
+msgid "Update your profile, manage notifications, and keep your customer details current."
+msgstr "在一个地方更新资料、管理通知，并保持顾客信息为最新。"
+
+msgid "Edit each product in a separate workspace so inventory review stays focused."
+msgstr "为每个商品提供独立编辑页，让库存巡检保持专注。"
+
+msgid "Upload a cover image, preview gallery photos instantly, and keep pricing, stock, and status in one clean workflow."
+msgstr "上传封面图后即可即时预览图集，并在一个清晰流程中维护价格、库存和状态。"
+
+msgid "Build a richer product story with formatted content."
+msgstr "用排版更完整的内容讲好商品故事。"
+
+msgid "Use headings, emphasis, lists, and links in the editor below. The product detail page will render the same rich layout for customers."
+msgstr "在下方编辑器中使用段落、强调、列表和链接，顾客端详情页会按相同富文本布局展示。"
+
+msgid "Current cover"
+msgstr "当前封面"
+
+msgid "Remove cover image"
+msgstr "删除封面图"
+
+msgid "No cover image yet."
+msgstr "暂时还没有封面图。"
+
+msgid "Uploading a new cover replaces the current one after you save."
+msgstr "保存后，新上传的封面图会替换当前封面。"
+
+msgid "Existing"
+msgstr "已存在"
+
+msgid "Delete this image"
+msgstr "删除这张图片"
+
+msgid "No gallery images yet."
+msgstr "暂时还没有图库图片。"
+
+msgid "New gallery images will be added after save. Tick existing images to remove them."
+msgstr "新图库图片会在保存后加入，勾选现有图片即可删除。"
+
+msgid "New cover"
+msgstr "新封面"
+
+msgid "New image %s"
+msgstr "新图片 %s"
+
+msgid "Create Another Product"
+msgstr "继续创建商品"
+
+msgid "Bold"
+msgstr "加粗"
+
+msgid "Italic"
+msgstr "斜体"
+
+msgid "Bullet List"
+msgstr "无序列表"
+
+msgid "Numbered List"
+msgstr "有序列表"
+
+msgid "Paragraph"
+msgstr "段落"
+
+msgid "Link"
+msgstr "链接"
+
+msgid "Clear"
+msgstr "清除格式"
+
+msgid "Paste a link URL"
+msgstr "粘贴链接地址"
+
+msgid "Find better products with less friction."
+msgstr "更轻松地找到更合适的商品。"
+
+msgid "Search by category, tag, and price, then jump into image-rich detail pages, reviews, and one-step checkout."
+msgstr "按分类、标签和价格搜索，然后进入图文丰富的详情页、评价区和一步结账流程。"
+
+msgid "Quick View"
+msgstr "快速概览"
+
+msgid "Categories"
+msgstr "分类数"
+
+msgid "Trending"
+msgstr "热门趋势"
+
+msgid "No tags yet"
+msgstr "还没有标签"
+
+msgid "Use filters on the left to refine the catalog instantly."
+msgstr "使用左侧筛选器快速缩小商品范围。"
+
+msgid "Review orders with a clearer workflow."
+msgstr "用更清晰的流程查看和处理订单。"
+
+msgid "Filter quickly, inspect customer details, and move each order through translated status steps without losing context."
+msgstr "快速筛选、查看顾客详情，并在不丢失上下文的情况下推进每笔订单的本地化状态流程。"
+
+msgid "See product health and order pressure at a glance."
+msgstr "一眼看清商品表现和订单压力。"
+
+msgid "Use the dashboard to jump into product edits, order triage, and unread notifications from one place."
+msgstr "通过这个仪表盘可以从一个入口快速进入商品编辑、订单处理和未读通知。"
+
+msgid "Order Details"
+msgstr "订单详情"
+
+msgid "Back"
+msgstr "返回"
+
+msgid "Review the full order summary, shipping details, and status history."
+msgstr "查看完整订单摘要、收货信息和状态历史。"
+
+msgid "Sign in to continue browsing products, tracking orders, and managing your storefront."
+msgstr "登录后继续浏览商品、跟踪订单并管理你的店铺。"
+
+msgid "Faster checkout"
+msgstr "更快结账"
+
+msgid "Pick up where you left off with your cart, orders, and saved address."
+msgstr "从购物车、订单和已保存地址的当前位置继续。"
+
+msgid "Unified dashboard"
+msgstr "统一工作台"
+
+msgid "Customers and merchants land in the right workflow immediately after login."
+msgstr "顾客和商家登录后都会立即进入各自对应的工作流。"
+
+msgid "Use your email and password to access your account."
+msgstr "使用邮箱和密码登录你的账户。"
+
+msgid "Open your storefront or start shopping."
+msgstr "开启你的店铺，或立刻开始购物。"
+
+msgid "Create one account and move directly into the customer or merchant experience with localized pages and notifications."
+msgstr "创建一个账户后即可直接进入顾客或商家体验，并享受本地化页面与通知。"
+
+msgid "Customer ready"
+msgstr "顾客模式就绪"
+
+msgid "Save your shipping address once and use it during checkout immediately."
+msgstr "一次保存收货地址，结账时即可直接使用。"
+
+msgid "Merchant ready"
+msgstr "商家模式就绪"
+
+msgid "Publish products, monitor orders, and respond to reviews from the same dashboard."
+msgstr "在同一个工作台中发布商品、监控订单并响应评价。"
+
+msgid "Tip"
+msgstr "提示"
+
+msgid "Choose the correct role now. You can start as a customer or jump straight into merchant management."
+msgstr "现在请选择正确角色。你可以先作为顾客开始，也可以直接进入商家管理。"
+
+msgid "This product is currently out of stock."
+msgstr "该商品当前缺货。"
+
+msgid "Adjust the quantity before adding the item to your cart."
+msgstr "加入购物车前可以先调整数量。"
+
+msgid "Tune quantities before checkout."
+msgstr "在结账前先调好数量。"
+
+msgid "Update quantities inline, confirm totals instantly, and keep your preferred shipping address ready for checkout."
+msgstr "直接在当前页调整数量、即时确认总额，并让常用收货地址随时可用于结账。"
+
+msgid "Items in cart"
+msgstr "购物车商品数"
+
+msgid "Browse the catalog and add a few products to start your checkout flow."
+msgstr "先去浏览商品并加入几件商品，即可开始结账流程。"
+
+msgid "Current Password"
+msgstr "当前密码"
+
+msgid "New Password"
+msgstr "新密码"
+
+msgid "Confirm Password"
+msgstr "确认密码"
+
+msgid "Track order updates, review activity, and system messages in one place."
+msgstr "在一个页面中查看订单更新、评价动态和系统消息。"
+
+msgid "Stay on top of new orders, reviews, and stock-related updates from one merchant inbox."
+msgstr "在一个商家消息中心中掌握新订单、评价和库存相关更新。"
+
+msgid "Newest"
+msgstr "最新上架"
+
+msgid "Price: Low to High"
+msgstr "价格：从低到高"
+
+msgid "Price: High to Low"
+msgstr "价格：从高到低"
+
+msgid "Name: A to Z"
+msgstr "名称：A 到 Z"
+
+msgid "Rating: High to Low"
+msgstr "评分：从高到低"
+
+msgid "Sort By"
+msgstr "排序方式"
+
+msgid "Previous"
+msgstr "上一页"
+
+msgid "Next"
+msgstr "下一页"
+
+msgid "Recently Updated"
+msgstr "最近更新"
+
+msgid "Stock: High to Low"
+msgstr "库存：从高到低"
+
+msgid "Latest First"
+msgstr "最新优先"
+
+msgid "Oldest First"
+msgstr "最早优先"
+
+msgid "Amount: High to Low"
+msgstr "金额：从高到低"
+
+msgid "Amount: Low to High"
+msgstr "金额：从低到高"

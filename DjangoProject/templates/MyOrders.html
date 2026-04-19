@@ -1,0 +1,103 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "My Orders" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, #d8f3ff 0%, #eef9ff 24%, #ffffff 60%);
+    }
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .order-card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(9, 68, 90, 0.08);
+      padding: 24px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(18, 56, 72, 0.08);
+    }
+    .timeline-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid #edf5f8;
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="customer-nav-shell">
+      <div class="customer-brand">
+        <span class="customer-brand-kicker">{% trans "Customer Workspace" %}</span>
+        <div class="customer-brand-title">{% trans "Order Center" %}</div>
+        <div class="customer-brand-subtitle">{% trans "Track every purchase, review totals, and follow status changes from one timeline-driven space." %}</div>
+      </div>
+      <div class="customer-nav-right">
+        <div class="customer-nav-links">
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'cart' %} is-current{% endif %}" href="{% url 'shop:cart' %}">{% trans "My Cart" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'order' or request.resolver_match.url_name == 'order_detail' %} is-current{% endif %}" href="{% url 'shop:order' %}">{% trans "My Orders" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+    {% include 'includes/message_stack.html' %}
+    <h1 class="title is-3 mb-5">{% trans "My Orders" %}</h1>
+    {% for order in orders %}
+      <div class="order-card">
+        <div class="level">
+          <div class="level-left">
+            <div>
+              <p class="title is-5 mb-2"><a href="{% url 'shop:order_detail' order.id %}">{% trans "Order" %} #{{ order.id }}</a></p>
+              <p class="is-size-7 has-text-grey">{% trans "Created" %}: {{ order.created_at|date:"DATETIME_FORMAT" }}</p>
+              <p class="is-size-7 has-text-grey">{% trans "Last Update" %}: {{ order.status_updated_at|date:"DATETIME_FORMAT" }}</p>
+            </div>
+          </div>
+          <div class="level-right">
+            <div>
+              <span class="tag is-info is-light">{{ order.get_status_display }}</span>
+              <p class="has-text-right mt-2"><strong>${{ order.total_amount }}</strong></p>
+            </div>
+          </div>
+        </div>
+        <p class="mb-3"><strong>{% trans "Shipping Address" %}:</strong> {{ order.shipping_address }}</p>
+        <div class="columns is-multiline">
+          {% for item in order.items.all %}
+            <div class="column is-12-mobile is-6-tablet is-4-desktop">
+              <div class="box" style="height:100%;">
+                <p class="has-text-weight-semibold">{{ item.product.name }}</p>
+                <p>{% trans "Quantity" %}: {{ item.quantity }}</p>
+                <p>{% trans "Unit Price" %}: ${{ item.unit_price }}</p>
+                <p>{% trans "Subtotal" %}: ${{ item.subtotal }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <hr>
+        <p class="has-text-weight-semibold mb-2">{% trans "Status Timeline" %}</p>
+        {% if order.status_history.all %}
+          <div class="content is-small">
+            <ul class="timeline-list">
+              {% for record in order.status_history.all %}
+                <li>{{ record.changed_at|date:"DATETIME_FORMAT" }}: {{ record.from_status_display }} → {{ record.to_status_display }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% else %}
+          <p class="is-size-7 has-text-grey">{% trans "No status changes yet." %}</p>
+        {% endif %}
+      </div>
+    {% empty %}
+      <article class="message is-light"><div class="message-body">{% trans "You have not placed any orders yet." %}</div></article>
+    {% endfor %}
+  </div>
+</body>
+</html>

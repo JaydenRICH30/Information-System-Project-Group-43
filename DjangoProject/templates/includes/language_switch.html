@@ -1,0 +1,12 @@
+{% load i18n %}
+<form action="/i18n/setlang/" method="post" class="language-switch-form" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path|default:request.path }}">
+  <span class="is-size-7 has-text-grey">{% trans "Language" %}</span>
+  <div class="select is-small">
+    <select name="language" onchange="this.form.submit()">
+      <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+      <option value="zh-hans" {% if LANGUAGE_CODE == 'zh-hans' %}selected{% endif %}>简体中文</option>
+    </select>
+  </div>
+</form>

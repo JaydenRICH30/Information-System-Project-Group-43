@@ -1,0 +1,16 @@
+{% load i18n %}
+{% for product in featured_products %}
+  <div class="column is-12-mobile is-6-tablet is-3-desktop">
+    <a class="product-card" href="{% url 'shop:product_detail' product.id %}">
+      {% if product.primary_image_url %}
+        <img src="{{ product.primary_image_url }}" alt="{{ product.name }}">
+      {% endif %}
+      <div class="content">
+        <p class="title is-5 mb-2">{{ product.name }}</p>
+        <p class="is-size-7 has-text-grey mb-2">{% if product.category %}{{ product.category.name }}{% else %}{% trans "Uncategorized" %}{% endif %}</p>
+        <p class="mb-2">${{ product.price }}</p>
+        <p class="is-size-7">{% trans "Rating" %}: {{ product.average_rating }}</p>
+      </div>
+    </a>
+  </div>
+{% endfor %}

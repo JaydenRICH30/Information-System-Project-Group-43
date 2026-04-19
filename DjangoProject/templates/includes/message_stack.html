@@ -1,0 +1,9 @@
+{% if messages %}
+  <div class="message-stack">
+    {% for message in messages %}
+      <article class="message {% if message.tags == 'error' %}is-danger{% elif message.tags == 'warning' %}is-warning{% else %}is-success{% endif %}">
+        <div class="message-body">{{ message }}</div>
+      </article>
+    {% endfor %}
+  </div>
+{% endif %}

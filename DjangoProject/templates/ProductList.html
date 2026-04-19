@@ -1,0 +1,309 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Product Catalog" %}</title>
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+    <style>
+        :root {
+            --ocean-ink: #123848;
+            --ocean-soft: #f3fbff;
+            --ocean-card: rgba(255, 255, 255, 0.88);
+        }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #d8f3ff 0%, #eef9ff 28%, #ffffff 62%);
+            color: var(--ocean-ink);
+        }
+        .page-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px 16px 40px;
+        }
+        .hero-strip {
+            display: grid;
+            grid-template-columns: 1.4fr 0.9fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .hero-card,
+        .hero-side {
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 20px 48px rgba(18, 56, 72, 0.1);
+        }
+        .hero-card {
+            background: linear-gradient(135deg, #103645 0%, #1f6b86 62%, #85d8ff 100%);
+            color: white;
+        }
+        .hero-card .title,
+        .hero-card .subtitle,
+        .hero-card strong {
+            color: white;
+        }
+        .hero-side {
+            background: var(--ocean-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(18, 56, 72, 0.08);
+        }
+        .filters,
+        .results {
+            background: var(--ocean-card);
+            border-radius: 24px;
+            box-shadow: 0 14px 40px rgba(0, 83, 109, 0.08);
+            border: 1px solid rgba(18, 56, 72, 0.08);
+        }
+        .filters {
+            padding: 20px;
+            position: sticky;
+            top: 18px;
+        }
+        .results {
+            padding: 20px;
+        }
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .product-card {
+            height: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid #eef3f5;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 34px rgba(0, 83, 109, 0.12);
+        }
+        .product-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+        }
+        .product-copy {
+            padding: 16px;
+        }
+        .nav-actions {
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            align-items:center;
+        }
+        .stat-pills {
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            margin-top: 14px;
+        }
+        .stat-pills .tag {
+            border-radius: 999px;
+            padding: 0 12px;
+        }
+        .title + .subtitle {
+            margin-top: 0.75rem !important;
+        }
+        .title,
+        .subtitle {
+            line-height: 1.25;
+        }
+        @media (max-width: 960px) {
+            .hero-strip {
+                grid-template-columns: 1fr;
+            }
+            .filters {
+                position: static;
+            }
+        }
+        @media (max-width: 768px) {
+            .level {
+                display: block;
+            }
+            .nav-actions {
+                width: 100%;
+                margin-top: 12px;
+            }
+            .nav-actions > * {
+                width: 100%;
+            }
+            .nav-actions .button {
+                justify-content: center;
+            }
+            .hero-card,
+            .hero-side,
+            .filters,
+            .results {
+                padding: 18px;
+            }
+        }
+    
+</style>
+</head>
+<body>
+    <div class="page-shell">
+        <div class="customer-nav-shell">
+            <div class="customer-brand">
+                <span class="customer-brand-kicker">{% trans "Customer Workspace" %}</span>
+                <div class="customer-brand-title">{% trans "Product Catalog" %}</div>
+                <div class="customer-brand-subtitle">{% trans "Filter by category, price range, and tags." %}</div>
+            </div>
+            <div class="customer-nav-right">
+                <div class="customer-nav-links">
+                    <a class="customer-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+                    <a class="customer-nav-link{% if request.resolver_match.url_name == 'product_list' or request.resolver_match.url_name == 'product_detail' %} is-current{% endif %}" href="{% url 'shop:product_list' %}">{% trans "Catalog" %}</a>
+                    <a class="customer-nav-link{% if request.resolver_match.url_name == 'cart' %} is-current{% endif %}" href="{% url 'shop:cart' %}">{% trans "Cart" %}</a>
+                    <a class="customer-nav-link{% if request.resolver_match.url_name == 'order' or request.resolver_match.url_name == 'order_detail' %} is-current{% endif %}" href="{% url 'shop:order' %}">{% trans "My Orders" %}</a>
+                </div>
+                {% include 'includes/language_switch.html' %}
+            </div>
+        </div>
+
+        {% include 'includes/message_stack.html' %}
+
+        <section class="hero-strip">
+            <div class="hero-card">
+                <p class="is-size-7 has-text-weight-semibold mb-2">{% trans "SHOPPING FLOW" %}</p>
+                <h2 class="title is-3 mb-2">{% trans "Find better products with less friction." %}</h2>
+                <p class="subtitle is-6 mb-0">{% trans "Search by category, tag, and price, then jump into image-rich detail pages, reviews, and one-step checkout." %}</p>
+                <div class="stat-pills">
+                    <span class="tag is-light">{{ result_count }} {% trans "products found" %}</span>
+                    <span class="tag is-light">{{ popular_tags|length }} {% trans "Popular Tags" %}</span>
+                </div>
+            </div>
+            <aside class="hero-side">
+                <p class="title is-5 mb-3">{% trans "Quick View" %}</p>
+                <p class="mb-2"><strong>{% trans "Categories" %}:</strong> {{ categories|length }}</p>
+                <p class="mb-2"><strong>{% trans "Trending" %}:</strong> {% if popular_tags %}{{ popular_tags.0.name }}{% else %}{% trans "No tags yet" %}{% endif %}</p>
+                <p class="mb-0 has-text-grey">{% trans "Use filters on the left to refine the catalog instantly." %}</p>
+            </aside>
+        </section>
+
+        <div class="columns is-variable is-5">
+            <div class="column is-12-mobile is-4-tablet is-3-desktop">
+                <form class="filters" method="get">
+                    <div class="field">
+                        <label class="label">{% trans "Search" %}</label>
+                        <div class="control">
+                            <input class="input" type="text" name="q" value="{{ filters.q }}" placeholder="{% trans 'Name, description, tag' %}">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">{% trans "Category" %}</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select name="category">
+                                    <option value="">{% trans "All categories" %}</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}" {% if filters.category == category.id|stringformat:'s' %}selected{% endif %}>{{ category.name }} ({{ category.product_count }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">{% trans "Tag" %}</label>
+                        <div class="control">
+                            <input class="input" type="text" name="tag" value="{{ filters.tag }}" placeholder="{% trans 'Example: eco' %}">
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <label class="label">{% trans "Min Price" %}</label>
+                            <input class="input" type="number" step="0.01" name="min_price" value="{{ filters.min_price }}">
+                        </div>
+                        <div class="column">
+                            <label class="label">{% trans "Max Price" %}</label>
+                            <input class="input" type="number" step="0.01" name="max_price" value="{{ filters.max_price }}">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">{% trans "Sort By" %}</label>
+                        <div class="select is-fullwidth">
+                            <select name="sort">
+                                {% for value, label in sort_options.items %}
+                                    <option value="{{ value }}" {% if filters.sort == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field is-grouped mt-4">
+                        <div class="control is-expanded">
+                            <button class="button is-info is-fullwidth" type="submit">{% trans "Apply Filters" %}</button>
+                        </div>
+                        <div class="control">
+                            <a class="button is-light" href="{% url 'shop:product_list' %}">{% trans "Reset" %}</a>
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="label">{% trans "Popular Tags" %}</p>
+                    <div class="tag-cloud">
+                        {% for tag in popular_tags %}
+                            <a class="tag is-light" href="?tag={{ tag.name }}">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+
+            <div class="column is-12-mobile is-8-tablet is-9-desktop">
+                <div class="results">
+                    <p class="mb-5 has-text-grey">{{ result_count }} {% trans "products found" %}</p>
+                    <div class="columns is-multiline">
+                        {% for product in products %}
+                            <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                                <a class="product-card is-block" href="{% url 'shop:product_detail' product.id %}">
+                                    {% if product.primary_image_url %}
+                                        <img src="{{ product.primary_image_url }}" alt="{{ product.name }}">
+                                    {% endif %}
+                                    <div class="product-copy">
+                                        <p class="title is-5 mb-2">{{ product.name }}</p>
+                                        <p class="is-size-7 has-text-grey mb-2">{% if product.category %}{{ product.category.name }}{% else %}{% trans "Uncategorized" %}{% endif %}</p>
+                                        <div class="content is-small mb-2">{{ product.description|striptags|truncatechars:100 }}</div>
+                                        <div class="tags mb-2">
+                                            {% for tag in product.tags.all %}
+                                                <span class="tag is-info is-light">{{ tag.name }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="level mb-0">
+                                            <div class="level-left"><strong>${{ product.price }}</strong></div>
+                                            <div class="level-right"><span class="tag {% if product.stock %}is-success{% else %}is-danger{% endif %} is-light">{% if product.stock %}{% trans "In Stock" %}{% else %}{% trans "Out of Stock" %}{% endif %}</span></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% empty %}
+                            <div class="column is-12">
+                                <article class="message is-light">
+                                    <div class="message-body">{% trans "No products match the current filters." %}</div>
+                                </article>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if page_obj.paginator.num_pages > 1 %}
+                        <nav class="pagination is-centered mt-5" role="navigation" aria-label="pagination">
+                            {% if page_obj.has_previous %}
+                                <a class="pagination-previous" href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <a class="pagination-next" href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+                            {% endif %}
+                            <ul class="pagination-list">
+                                {% for page_number in page_obj.paginator.page_range %}
+                                    {% if page_number == page_obj.number %}
+                                        <li><span class="pagination-link is-current">{{ page_number }}</span></li>
+                                    {% elif page_number >= page_obj.number|add:'-2' and page_number <= page_obj.number|add:'2' %}
+                                        <li><a class="pagination-link" href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_number }}">{{ page_number }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

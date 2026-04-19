@@ -1,0 +1,318 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Customer Dashboard" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    :root {
+      --sky: #d8f0ff;
+      --sea: #0f6c81;
+      --sand: #fff4d9;
+      --ink: #1d2a33;
+      --line: rgba(15, 108, 129, 0.12);
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #ffffff 5%, var(--sky) 45%, #f5fbff 100%);
+      color: var(--ink);
+    }
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .hero-box,
+    .panel-box,
+    .product-card {
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 20px 40px rgba(15, 108, 129, 0.12);
+      border: 1px solid var(--line);
+    }
+    .hero-box {
+      padding: 28px;
+      margin-bottom: 22px;
+    }
+    .product-card {
+      display: block;
+      height: 100%;
+      overflow: hidden;
+    }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .product-card .content {
+      padding: 18px;
+    }
+    .search-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 0;
+    }
+    .metric-card {
+      background: var(--sand);
+      border-radius: 20px;
+      padding: 18px;
+      min-height: 130px;
+    }
+    .hero-box .columns {
+      margin: 0;
+    }
+    .hero-box .column {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .section-header {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-header .button {
+      flex-shrink: 0;
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    .featured-products-grid {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .featured-pagination {
+      margin-top: 24px;
+    }
+    .mobile-load-anchor {
+      display: none;
+      padding: 16px 0 8px;
+      text-align: center;
+      color: rgba(29, 42, 51, 0.68);
+      font-size: 14px;
+    }
+    @media (max-width: 768px) {
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+      .hero-box {
+        padding: 22px;
+      }
+      .panel-box .level {
+        display: block;
+      }
+      .section-header {
+        align-items: stretch;
+      }
+      .section-header > * {
+        width: 100%;
+      }
+      .section-header .button {
+        justify-content: center;
+      }
+      .featured-pagination {
+        display: none;
+      }
+      .mobile-load-anchor {
+        display: block;
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="customer-nav-shell">
+      <div class="customer-brand">
+        <span class="customer-brand-kicker">{% trans "Customer Workspace" %}</span>
+        <div class="customer-brand-title">{% trans "Welcome back" %}, {{ request.user.username }}</div>
+        <div class="customer-brand-subtitle">{% trans "Browse products, manage your cart, and keep track of orders." %}</div>
+      </div>
+      <div class="customer-nav-right">
+        <div class="customer-nav-links">
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %} {% if unread_notifications %}<span class="tag is-info ml-2">{{ unread_notifications }}</span>{% endif %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'cart' %} is-current{% endif %}" href="{% url 'shop:cart' %}">{% trans "My Cart" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'order' or request.resolver_match.url_name == 'order_detail' %} is-current{% endif %}" href="{% url 'shop:order' %}">{% trans "My Orders" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'account' %} is-current{% endif %}" href="{% url 'login:account' %}">{% trans "My Account" %}</a>
+          <a class="customer-nav-link" href="{% url 'login:logout' %}">{% trans "Log out" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+
+    {% include 'includes/message_stack.html' %}
+
+    <div class="hero-box">
+      <div class="columns is-variable is-5 is-vcentered">
+        <div class="column is-7">
+          <p class="is-size-7 has-text-weight-semibold mb-2">{% trans "SHOPPING FLOW" %}</p>
+          <h2 class="title is-2 mb-3">{% trans "Search, filter, cart, checkout, and review in one place." %}</h2>
+          <p class="subtitle is-5">{% trans "The catalog supports category, tag, and price filtering, while product pages include rich descriptions, gallery images, and related recommendations." %}</p>
+          <form class="search-form" action="{% url 'shop:product_list' %}" method="get">
+            <input class="input is-medium" type="text" name="q" placeholder="{% trans 'Search products or tags' %}">
+            <button class="button is-info is-medium" type="submit">{% trans "Open Catalog" %}</button>
+          </form>
+        </div>
+        <div class="column is-5">
+          <div class="metrics">
+            <div class="metric-card">
+              <p class="heading">{% trans "Unread Notifications" %}</p>
+              <p class="title is-3">{{ unread_notifications }}</p>
+            </div>
+            <div class="metric-card">
+              <p class="heading">{% trans "Recent Orders" %}</p>
+              <p class="title is-3">{{ latest_orders|length }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-box p-5 mb-5">
+      <div class="level mb-4">
+        <div class="level-left">
+          <h2 class="title is-4 mb-0">{% trans "Latest Orders" %}</h2>
+        </div>
+        <div class="level-right"><a class="button is-info is-light" href="{% url 'shop:order' %}">{% trans "Open" %}</a></div>
+      </div>
+      {% if latest_orders %}
+        <div class="table-container">
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <th>{% trans "Order" %}</th>
+                <th>{% trans "Created" %}</th>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "Amount" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in latest_orders %}
+                <tr>
+                  <td><a href="{% url 'shop:order_detail' order.id %}">#{{ order.id }}</a></td>
+                  <td>{{ order.created_at|date:"DATETIME_FORMAT" }}</td>
+                  <td><span class="tag is-info is-light">{{ order.get_status_display }}</span></td>
+                  <td>${{ order.total_amount }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>{% trans "No orders yet." %}</p>
+      {% endif %}
+    </div>
+
+    <div id="featured-products-grid" class="columns is-multiline featured-products-grid">
+      {% include 'includes/featured_product_cards.html' with featured_products=featured_products %}
+    </div>
+
+    {% if featured_page_obj.paginator.num_pages > 1 %}
+      <nav class="pagination is-centered featured-pagination" role="navigation" aria-label="featured products pagination">
+        {% if featured_page_obj.has_previous %}
+          <a class="pagination-previous" href="?products_page={{ featured_page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+        {% else %}
+          <a class="pagination-previous" disabled>{% trans "Previous" %}</a>
+        {% endif %}
+
+        {% if featured_page_obj.has_next %}
+          <a class="pagination-next" href="?products_page={{ featured_page_obj.next_page_number }}">{% trans "Next" %}</a>
+        {% else %}
+          <a class="pagination-next" disabled>{% trans "Next" %}</a>
+        {% endif %}
+
+        <ul class="pagination-list">
+          {% for page_number in featured_page_obj.paginator.page_range %}
+            <li>
+              <a class="pagination-link {% if featured_page_obj.number == page_number %}is-current{% endif %}" href="?products_page={{ page_number }}" aria-label="{% blocktrans %}Go to page {{ page_number }}{% endblocktrans %}" {% if featured_page_obj.number == page_number %}aria-current="page"{% endif %}>{{ page_number }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    <div id="mobile-load-anchor" class="mobile-load-anchor" data-next-page="{% if featured_page_obj.has_next %}{{ featured_page_obj.next_page_number }}{% endif %}">
+      {% if featured_page_obj.has_next %}
+        {% trans "Loading more products as you scroll..." %}
+      {% else %}
+        {% trans "You have reached the end of the product list." %}
+      {% endif %}
+    </div>
+  </div>
+  <script>
+    (function () {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const anchor = document.getElementById('mobile-load-anchor');
+      const grid = document.getElementById('featured-products-grid');
+      if (!isMobile || !anchor || !grid) {
+        return;
+      }
+
+      let nextPage = anchor.dataset.nextPage;
+      let loading = false;
+
+      async function loadNextPage() {
+        if (loading || !nextPage) {
+          return;
+        }
+        loading = true;
+        anchor.textContent = '{% trans "Loading more products as you scroll..." %}';
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('products_page', nextPage);
+        url.searchParams.set('partial', 'featured-products');
+
+        try {
+          const response = await fetch(url.toString(), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin',
+          });
+          if (!response.ok) {
+            throw new Error('request failed');
+          }
+          const payload = await response.json();
+          grid.insertAdjacentHTML('beforeend', payload.html);
+          nextPage = payload.next_page ? String(payload.next_page) : '';
+          anchor.dataset.nextPage = nextPage;
+          anchor.textContent = nextPage
+            ? '{% trans "Loading more products as you scroll..." %}'
+            : '{% trans "You have reached the end of the product list." %}';
+        } catch (error) {
+          anchor.textContent = '{% trans "Could not load more products. Please refresh and try again." %}';
+        } finally {
+          loading = false;
+        }
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadNextPage();
+          }
+        });
+      }, { rootMargin: '160px 0px' });
+
+      observer.observe(anchor);
+    }());
+  </script>
+</body>
+</html>

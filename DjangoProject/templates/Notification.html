@@ -1,0 +1,121 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Notifications" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, #d8f3ff 0%, #eef9ff 24%, #ffffff 60%);
+    }
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .hero-box {
+      background: linear-gradient(135deg, #103645 0%, #1f6b86 62%, #85d8ff 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 20px 45px rgba(9, 68, 90, 0.14);
+    }
+    .hero-box .title,
+    .hero-box .subtitle {
+      color: white;
+    }
+    .notification-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(9, 68, 90, 0.08);
+      padding: 18px;
+      margin-bottom: 14px;
+      border-left: 5px solid #58b5d6;
+    }
+    .notification-card.is-read {
+      opacity: 0.72;
+      border-left-color: #c5d6dd;
+    }
+    .notification-meta {
+      align-items: flex-start;
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    @media (max-width: 768px) {
+      .notification-meta {
+        display: block;
+      }
+      .notification-meta .level-right {
+        margin-top: 8px;
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="customer-nav-shell">
+      <div class="customer-brand">
+        <span class="customer-brand-kicker">{% trans "Customer Workspace" %}</span>
+        <div class="customer-brand-title">{% trans "Customer Inbox" %}</div>
+        <div class="customer-brand-subtitle">{% trans "Track order updates, review activity, and system messages in one place." %}</div>
+      </div>
+      <div class="customer-nav-right">
+        <div class="customer-nav-links">
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'order' or request.resolver_match.url_name == 'order_detail' %} is-current{% endif %}" href="{% url 'shop:order' %}">{% trans "My Orders" %}</a>
+          <a class="customer-nav-link{% if request.resolver_match.url_name == 'cart' %} is-current{% endif %}" href="{% url 'shop:cart' %}">{% trans "My Cart" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+    <section class="hero-box">
+      <h1 class="title is-3 mb-2">{% trans "Notifications" %}</h1>
+      <p class="subtitle is-6 mb-0">{% trans "Track order updates, review activity, and system messages in one place." %}</p>
+    </section>
+    {% for notification in notifications %}
+      <div class="notification-card {% if notification.is_read %}is-read{% endif %}">
+        <div class="level is-mobile notification-meta mb-2">
+          <div class="level-left">
+            <strong>{{ notification.title }}</strong>
+          </div>
+          <div class="level-right">
+            <span class="tag is-light">{{ notification.get_kind_display }}</span>
+          </div>
+        </div>
+        <p class="mb-2">{{ notification.message }}</p>
+        <p class="is-size-7 has-text-grey mb-3">{{ notification.created_at|date:"DATETIME_FORMAT" }}</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          {% if notification.link %}
+            <a class="button is-small is-link is-light" href="{{ notification.link }}">{% trans "Open" %}</a>
+          {% endif %}
+          {% if not notification.is_read %}
+            <form action="{% url 'shop:notification_action' notification.id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="read">
+              <button class="button is-small is-info is-light" type="submit">{% trans "Mark as Read" %}</button>
+            </form>
+          {% endif %}
+          <form action="{% url 'shop:notification_action' notification.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="delete">
+            <button class="button is-small is-danger is-light" type="submit">{% trans "Delete" %}</button>
+          </form>
+        </div>
+      </div>
+    {% empty %}
+      <article class="message is-light"><div class="message-body">{% trans "You do not have any notifications." %}</div></article>
+    {% endfor %}
+  </div>
+</body>
+</html>

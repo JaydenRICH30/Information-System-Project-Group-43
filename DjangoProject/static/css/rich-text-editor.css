@@ -1,0 +1,81 @@
+.rich-editor {
+  border: 1px solid rgba(230, 162, 60, 0.24);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fffdfa;
+}
+
+.rich-editor-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px;
+  background: linear-gradient(180deg, #fff7e8 0%, #fffdf7 100%);
+  border-bottom: 1px solid rgba(230, 162, 60, 0.16);
+}
+
+.rich-editor-toolbar button {
+  border: 1px solid rgba(230, 162, 60, 0.22);
+  background: white;
+  color: #5f3b00;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rich-editor-toolbar button:hover {
+  background: #fff4d6;
+}
+
+.rich-link-input {
+  min-width: 220px;
+  border: 1px solid rgba(230, 162, 60, 0.22);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 13px;
+  background: white;
+}
+
+.rich-editor-surface {
+  min-height: 260px;
+  padding: 18px;
+  outline: none;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.rich-editor-surface:empty::before {
+  content: attr(data-placeholder);
+  color: #9c8a69;
+}
+
+.rich-editor .rich-text-source {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .rich-link-input {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.rich-description p + p,
+.rich-description ul + p,
+.rich-description ol + p,
+.rich-description p + ul,
+.rich-description p + ol {
+  margin-top: 0.9em;
+}
+
+.rich-description ul,
+.rich-description ol {
+  margin-left: 1.3em;
+}
+
+.rich-description a {
+  color: #0f6c81;
+  text-decoration: underline;
+}

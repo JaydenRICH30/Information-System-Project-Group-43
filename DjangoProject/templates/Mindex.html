@@ -1,0 +1,192 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Merchant Dashboard" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    :root {
+      --amber-ink: #5f3b00;
+      --amber-line: #f0dfba;
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #fff0bf 0%, #fff7e8 24%, #ffffff 60%);
+      color: var(--amber-ink);
+    }
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .panel-box,
+    .product-card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(173, 109, 22, 0.1);
+      border: 1px solid rgba(230, 162, 60, 0.14);
+    }
+    .panel-box {
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: #fff0c7;
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .product-card {
+      display: block;
+      height: 100%;
+      overflow: hidden;
+    }
+    .product-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+    .product-copy {
+      padding: 16px;
+    }
+    .hero-box {
+      background: linear-gradient(135deg, #5f3b00 0%, #a66700 58%, #f0b44b 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 20px 45px rgba(104, 63, 0, 0.2);
+    }
+    .hero-box .title,
+    .hero-box .subtitle {
+      color: white;
+    }
+    .topbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .topbar-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    @media (max-width: 768px) {
+      .topbar {
+        align-items: stretch;
+      }
+      .topbar > *,
+      .topbar-links,
+      .topbar-links > * {
+        width: 100%;
+      }
+      .topbar-links .button {
+        justify-content: center;
+      }
+      .panel-box .level {
+        display: block;
+      }
+      .panel-box .level-right {
+        margin-top: 12px;
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="merchant-nav-shell">
+      <div class="merchant-brand">
+        <span class="merchant-brand-kicker">{% trans "Merchant Workspace" %}</span>
+        <div class="merchant-brand-title">{% trans "Merchant Dashboard" %}</div>
+        <div class="merchant-brand-subtitle">{% trans "Manage products, process orders, and monitor notifications." %}</div>
+      </div>
+      <div class="merchant-nav-right">
+        <div class="merchant-nav-links">
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %} {% if unread_notifications %}<span class="tag is-warning ml-2">{{ unread_notifications }}</span>{% endif %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'account' %} is-current{% endif %}" href="{% url 'login:account' %}">{% trans "Account" %}</a>
+          <a class="merchant-nav-link" href="{% url 'login:logout' %}">{% trans "Log out" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+
+    {% include 'includes/message_stack.html' %}
+
+    <section class="hero-box">
+      <p class="is-size-7 has-text-weight-semibold mb-2">{% trans "Operations" %}</p>
+      <h2 class="title is-3 mb-2">{% trans "See product health and order pressure at a glance." %}</h2>
+      <p class="subtitle is-6 mb-0">{% trans "Use the dashboard to jump into product edits, order triage, and unread notifications from one place." %}</p>
+    </section>
+
+    <div class="metrics">
+      <div class="metric-card">
+        <p class="heading">{% trans "Active Products" %}</p>
+        <p class="title is-3">{{ active_product_count }}</p>
+      </div>
+      <div class="metric-card">
+        <p class="heading">{% trans "Open Orders" %}</p>
+        <p class="title is-3">{{ open_orders_count }}</p>
+      </div>
+      <div class="metric-card">
+        <p class="heading">{% trans "Unread Notifications" %}</p>
+        <p class="title is-3">{{ unread_notifications }}</p>
+      </div>
+    </div>
+
+    <div class="panel-box">
+      <div class="level mb-4">
+        <div class="level-left">
+          <h2 class="title is-4 mb-0">{% trans "Operations" %}</h2>
+        </div>
+        <div class="level-right" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="button is-warning" href="{% url 'shop:manage' %}">{% trans "Manage Products" %}</a>
+          <a class="button is-warning is-light" href="{% url 'shop:manage_product_new' %}">{% trans "Add Product" %}</a>
+          <a class="button is-warning is-light" href="{% url 'shop:merchant_orders' %}">{% trans "Manage Orders" %}</a>
+        </div>
+      </div>
+
+      <div class="columns is-multiline">
+        {% for product in merchant_products %}
+          <div class="column is-12-mobile is-6-tablet is-3-desktop">
+            <a class="product-card" href="{% url 'shop:manage_product_edit' product.id %}">
+              {% if product.primary_image_url %}
+                <img src="{{ product.primary_image_url }}" alt="{{ product.name }}">
+              {% endif %}
+              <div class="product-copy">
+                <p class="title is-6 mb-1">{{ product.name }}</p>
+                <p class="is-size-7 has-text-grey mb-2">{% if product.category %}{{ product.category.name }}{% else %}{% trans "Uncategorized" %}{% endif %}</p>
+                <div class="level mb-0">
+                  <div class="level-left">${{ product.price }}</div>
+                  <div class="level-right"><span class="tag is-light">{{ product.get_status_display }}</span></div>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% empty %}
+          <div class="column is-12"><p>{% trans "No products yet. Start by adding your first product." %}</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

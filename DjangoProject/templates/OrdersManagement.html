@@ -1,0 +1,343 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Orders Management" %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <style>
+    :root {
+      --merchant-ink: #5f3b00;
+      --merchant-line: #f0dfba;
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #fff0bf 0%, #fff7e8 24%, #ffffff 60%);
+      color: var(--merchant-ink);
+    }
+    .shell {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .panel-box {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(173, 109, 22, 0.08);
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(230, 162, 60, 0.14);
+    }
+    .hero-banner {
+      background: linear-gradient(135deg, #5f3b00 0%, #a66700 58%, #f0b44b 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 20px 45px rgba(104, 63, 0, 0.2);
+    }
+    .hero-banner .title,
+    .hero-banner .subtitle {
+      color: white;
+    }
+    .filter-panel {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr 0.9fr 0.8fr;
+      gap: 14px;
+      align-items: end;
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255, 250, 240, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(230, 162, 60, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      margin-bottom: 22px;
+    }
+    .filter-header {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .filter-note {
+      max-width: 560px;
+      color: rgba(95, 59, 0, 0.74);
+      font-size: 14px;
+      margin: 0;
+    }
+    .filter-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+    .order-card {
+      border-radius: 24px;
+      border: 1px solid rgba(230, 162, 60, 0.14);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 252, 246, 0.98) 100%);
+      box-shadow: 0 18px 40px rgba(173, 109, 22, 0.08);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .order-meta-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .order-badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #fff2ce;
+      color: #8d620d;
+      border: 1px solid rgba(230, 162, 60, 0.18);
+    }
+    .timeline-chip {
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #fff7e6;
+      border: 1px solid var(--merchant-line);
+      font-size: 12px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .order-summary {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.95fr);
+      gap: 20px;
+    }
+    .status-panel {
+      border-radius: 18px;
+      background: rgba(255, 248, 231, 0.86);
+      border: 1px solid rgba(230, 162, 60, 0.18);
+      padding: 18px;
+    }
+    .timestamp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .timestamp-item {
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: #fffdf8;
+      border: 1px solid rgba(230, 162, 60, 0.16);
+    }
+    .order-lines {
+      padding-left: 18px;
+      margin: 0;
+    }
+    .order-lines li + li {
+      margin-top: 6px;
+    }
+    .order-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      margin-bottom: 16px;
+    }
+    .order-info-grid p {
+      margin: 0;
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    @media (max-width: 900px) {
+      .filter-panel {
+        grid-template-columns: 1fr 1fr;
+      }
+      .order-summary {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .filter-panel {
+        grid-template-columns: 1fr;
+        padding: 18px;
+      }
+      .filter-actions {
+        width: 100%;
+      }
+      .filter-actions > * {
+        width: 100%;
+      }
+      .order-info-grid {
+        grid-template-columns: 1fr;
+      }
+      .timestamp-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="merchant-nav-shell">
+      <div class="merchant-brand">
+        <span class="merchant-brand-kicker">{% trans "Merchant Workspace" %}</span>
+        <div class="merchant-brand-title">{% trans "Orders Console" %}</div>
+        <div class="merchant-brand-subtitle">{% trans "Work through triage, status updates, and customer context from one command surface." %}</div>
+      </div>
+      <div class="merchant-nav-right">
+        <div class="merchant-nav-links">
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'manage' %} is-current{% endif %}" href="{% url 'shop:manage' %}">{% trans "Manage Products" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'manage_product_new' or request.resolver_match.url_name == 'manage_product_edit' %} is-current{% endif %}" href="{% url 'shop:manage_product_new' %}">{% trans "Add Product" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'merchant_orders' %} is-current{% endif %}" href="{% url 'shop:merchant_orders' %}">{% trans "Manage Orders" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+
+    <section class="hero-banner">
+      <p class="is-size-7 has-text-weight-semibold mb-2">{% trans "Orders Management" %}</p>
+      <h1 class="title is-3 mb-2">{% trans "Review orders with a clearer workflow." %}</h1>
+      <p class="subtitle is-6 mb-0">{% trans "Filter quickly, inspect customer details, and move each order through translated status steps without losing context." %}</p>
+    </section>
+
+    {% include 'includes/message_stack.html' %}
+
+    <div class="panel-box">
+      <form method="get" class="filter-panel">
+        <div class="filter-header">
+          <div>
+            <h2 class="title is-4 mb-2">{% trans "Order Filters" %}</h2>
+            <p class="filter-note">{% trans "Search by order id or customer identity, then narrow by status and sort without pushing the action button out of the panel." %}</p>
+          </div>
+          <div class="filter-actions">
+            <a class="button is-light" href="{% url 'shop:merchant_orders' %}">{% trans "Reset" %}</a>
+            <button class="button is-warning" type="submit">{% trans "Filter Orders" %}</button>
+          </div>
+        </div>
+        <div>
+          <label class="label">{% trans "Search" %}</label>
+          <input class="input" type="text" name="q" value="{{ search }}" placeholder="{% trans 'Order id, customer name, email' %}">
+        </div>
+        <div>
+          <label class="label">{% trans "Status" %}</label>
+          <div class="select is-fullwidth">
+            <select name="status">
+              <option value="">{% trans "All statuses" %}</option>
+              {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="label">{% trans "Sort By" %}</label>
+          <div class="select is-fullwidth">
+            <select name="sort">
+              {% for value, label in sort_options.items %}
+                <option value="{{ value }}" {% if sort == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="label">{% trans "Result Scope" %}</label>
+          <div class="order-badge">{% trans "Merchant-owned order lines only" %}</div>
+        </div>
+      </form>
+
+      {% for order in orders %}
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <p class="title is-5 mb-1">{% trans "Order" %} #{{ order.id }}</p>
+              <p class="is-size-7 has-text-grey mb-0">{% trans "Last Status Update" %}: {{ order.status_updated_at|date:"DATETIME_FORMAT" }}</p>
+            </div>
+            <div class="order-meta-badges">
+              <span class="order-badge">{% trans "Total" %}: ${{ order.total_amount }}</span>
+              <span class="tag is-warning is-light">{{ order.get_status_display }}</span>
+            </div>
+          </div>
+          <div class="order-summary">
+            <div>
+              <div class="order-info-grid">
+                <p><strong>{% trans "Customer" %}:</strong> {{ order.user.username }} ({{ order.user.email }})</p>
+                <p><strong>{% trans "Created" %}:</strong> {{ order.created_at|date:"DATETIME_FORMAT" }}</p>
+                <p><strong>{% trans "Address" %}:</strong> {{ order.shipping_address }}</p>
+                <p><strong>{% trans "Workflow" %}:</strong> {% trans "Pending → Hold/Shipped/Cancelled, Hold → Pending/Shipped/Cancelled, Shipped → Delivered" %}</p>
+              </div>
+              <div class="content is-small">
+                <ul class="order-lines">
+                  {% for item in order.items.all %}
+                    {% if item.product.owner_id == request.user.id %}
+                      <li>{{ item.product.name }} x {{ item.quantity }} - ${{ item.subtotal }}</li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            <div class="status-panel">
+              <p class="mb-2"><strong>{% trans "Current Status" %}:</strong> <span class="tag is-light">{{ order.get_status_display }}</span></p>
+              <p class="mb-4 is-size-7 has-text-grey">{% trans "Choose the next step from the controlled workflow on the right. This keeps customer communication and operational timestamps aligned." %}</p>
+              {% if order.allowed_next_statuses %}
+                <form action="{% url 'shop:update_order_status' order.id %}" method="post">
+                  {% csrf_token %}
+                  <div class="field">
+                    <label class="label">{% trans "Next Status" %}</label>
+                    <div class="control">
+                      <div class="select is-fullwidth">
+                        <select name="status">
+                          {% for next_status, next_label in order.next_status_choices %}
+                            <option value="{{ next_status }}">{{ next_label }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="button is-warning is-fullwidth" type="submit">{% trans "Update Status" %}</button>
+                </form>
+              {% else %}
+                <p class="has-text-grey is-size-7">{% trans "This order is already in a terminal state." %}</p>
+              {% endif %}
+              <hr>
+              <p class="has-text-weight-semibold mb-2">{% trans "Timestamps" %}</p>
+              <div class="timestamp-grid">
+                <div class="timestamp-item is-size-7"><span class="timeline-chip">{% trans "Shipped" %}</span><div>{{ order.shipped_at|default:'-' }}</div></div>
+                <div class="timestamp-item is-size-7"><span class="timeline-chip">{% trans "Held" %}</span><div>{{ order.held_at|default:'-' }}</div></div>
+                <div class="timestamp-item is-size-7"><span class="timeline-chip">{% trans "Cancelled" %}</span><div>{{ order.cancelled_at|default:'-' }}</div></div>
+                <div class="timestamp-item is-size-7"><span class="timeline-chip">{% trans "Delivered" %}</span><div>{{ order.delivered_at|default:'-' }}</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <article class="message is-light"><div class="message-body">{% trans "No orders match the current filters." %}</div></article>
+      {% endfor %}
+      {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="pagination is-centered mt-5" role="navigation" aria-label="pagination">
+          {% if page_obj.has_previous %}
+            <a class="pagination-previous" href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+          {% endif %}
+          {% if page_obj.has_next %}
+            <a class="pagination-next" href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

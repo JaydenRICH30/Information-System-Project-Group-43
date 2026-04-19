@@ -1,0 +1,560 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if edit_product %}{% trans "Edit Product" %}{% else %}{% trans "Add Product" %}{% endif %}</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'css/rich-text-editor.css' %}">
+  <style>
+    :root {
+      --merchant-ink: #5f3b00;
+      --merchant-accent: #e6a23c;
+      --merchant-soft: #fff8e7;
+      --merchant-line: #f0dfba;
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #fff0bf 0%, #fff7e8 24%, #ffffff 60%);
+      color: var(--merchant-ink);
+    }
+    .shell {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+    }
+    .panel-box {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(173, 109, 22, 0.08);
+      padding: 28px;
+      border: 1px solid rgba(230, 162, 60, 0.14);
+    }
+    .hero-banner {
+      background: linear-gradient(135deg, #5f3b00 0%, #a66700 58%, #f0b44b 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 20px 45px rgba(104, 63, 0, 0.2);
+    }
+    .hero-banner .title,
+    .hero-banner .subtitle {
+      color: white;
+    }
+    .editor-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.72fr);
+      gap: 24px;
+    }
+    .editor-main,
+    .editor-side {
+      display: grid;
+      gap: 18px;
+    }
+    .form-section {
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255, 252, 245, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(230, 162, 60, 0.16);
+    }
+    .section-kicker {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a06d16;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: #4f3000;
+    }
+    .section-copy {
+      color: rgba(95, 59, 0, 0.76);
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 18px;
+    }
+    .field-span-2 {
+      grid-column: 1 / -1;
+    }
+    .editor-side-card {
+      padding: 20px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(95, 59, 0, 0.96) 0%, rgba(166, 103, 0, 0.9) 100%);
+      color: white;
+      box-shadow: 0 22px 44px rgba(104, 63, 0, 0.18);
+    }
+    .editor-side-card h2,
+    .editor-side-card p,
+    .editor-side-card strong {
+      color: white;
+    }
+    .editor-checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .editor-checklist-item {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 14px;
+    }
+    .action-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+    }
+    .upload-shell {
+      border: 1.5px dashed var(--merchant-line);
+      border-radius: 20px;
+      background: var(--merchant-soft);
+      padding: 16px;
+    }
+    .upload-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 246, 227, 0.94) 100%);
+      border: 1px solid rgba(230, 162, 60, 0.18);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .upload-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(173, 109, 22, 0.12);
+    }
+    .upload-card input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .upload-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .upload-kicker {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8d620d;
+      font-weight: 700;
+    }
+    .upload-copy strong {
+      font-size: 16px;
+    }
+    .upload-copy p {
+      margin: 0;
+      color: rgba(95, 59, 0, 0.78);
+      font-size: 13px;
+    }
+    .upload-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 118px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #5f3b00;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .upload-meta {
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(95, 59, 0, 0.74);
+    }
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+    .asset-column {
+      display: grid;
+      gap: 12px;
+    }
+    .asset-note {
+      font-size: 13px;
+      color: rgba(95, 59, 0, 0.72);
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .preview-card {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--merchant-line);
+      background: white;
+      position: relative;
+      min-height: 92px;
+    }
+    .preview-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+    .preview-label {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(95, 59, 0, 0.82);
+      color: white;
+      font-size: 11px;
+    }
+    .media-card-body {
+      position: relative;
+    }
+    .media-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px 12px;
+      font-size: 12px;
+      color: rgba(95, 59, 0, 0.78);
+    }
+    .media-remove {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: #8f2d1f;
+    }
+    .media-remove input {
+      margin: 0;
+    }
+    .empty-preview {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px dashed rgba(230, 162, 60, 0.3);
+      background: rgba(255, 248, 231, 0.7);
+      font-size: 13px;
+      color: rgba(95, 59, 0, 0.7);
+    }
+    .title + .subtitle {
+      margin-top: 0.75rem !important;
+    }
+    .title,
+    .subtitle {
+      line-height: 1.25;
+    }
+    @media (max-width: 1023px) {
+      .editor-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .hero-banner {
+        padding: 22px;
+      }
+      .shell {
+        padding: 20px 14px 36px;
+      }
+      .panel-box {
+        padding: 20px;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .asset-grid {
+        grid-template-columns: 1fr;
+      }
+      .field-span-2 {
+        grid-column: auto;
+      }
+      .upload-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .upload-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="merchant-nav-shell">
+      <div class="merchant-brand">
+        <span class="merchant-brand-kicker">{% trans "Merchant Workspace" %}</span>
+        <div class="merchant-brand-title">{% trans "Product Studio" %}</div>
+        <div class="merchant-brand-subtitle">{% trans "Shape copy, media, and publish settings in one polished drafting environment." %}</div>
+      </div>
+      <div class="merchant-nav-right">
+        <div class="merchant-nav-links">
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'index' %} is-current{% endif %}" href="{% url 'login:index' %}">{% trans "Dashboard" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'manage' %} is-current{% endif %}" href="{% url 'shop:manage' %}">{% trans "Manage Products" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'manage_product_new' or request.resolver_match.url_name == 'manage_product_edit' %} is-current{% endif %}" href="{% url 'shop:manage_product_new' %}">{% trans "Add Product" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'merchant_orders' %} is-current{% endif %}" href="{% url 'shop:merchant_orders' %}">{% trans "Manage Orders" %}</a>
+          <a class="merchant-nav-link{% if request.resolver_match.url_name == 'notifications' %} is-current{% endif %}" href="{% url 'shop:notifications' %}">{% trans "Notifications" %}</a>
+        </div>
+        {% include 'includes/language_switch.html' %}
+      </div>
+    </div>
+
+    <section class="hero-banner">
+      <p class="is-size-7 has-text-weight-semibold mb-2">{% if edit_product %}{% trans "Edit Product" %}{% else %}{% trans "Add Product" %}{% endif %}</p>
+      <h1 class="title is-3 mb-2">{% trans "Build a richer product story with formatted content." %}</h1>
+      <p class="subtitle is-6 mb-0">{% trans "Use headings, emphasis, lists, and links in the editor below. The product detail page will render the same rich layout for customers." %}</p>
+    </section>
+
+    {% include 'includes/message_stack.html' %}
+
+    <div class="panel-box">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if edit_product %}<input type="hidden" name="product_id" value="{{ edit_product.id }}">{% endif %}
+        <div class="editor-layout">
+          <div class="editor-main">
+            <section class="form-section">
+              <div class="section-kicker">{% trans "Product Overview" %}</div>
+              <div class="section-title">{% trans "Name, category, and selling story" %}</div>
+              <p class="section-copy">{% trans "Start with the essentials, then write the formatted product narrative customers will see on the detail page." %}</p>
+              <div class="form-grid">
+                <div class="field">
+                  <label class="label">{{ form.name.label }}</label>
+                  <div class="control">{{ form.name }}</div>
+                  {% for error in form.name.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+                <div class="field">
+                  <label class="label">{{ form.category.label }}</label>
+                  <div class="control">{{ form.category }}</div>
+                  {% for error in form.category.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+                <div class="field field-span-2">
+                  <label class="label">{{ form.description.label }}</label>
+                  <div class="rich-editor" data-rich-editor>
+                    <div class="rich-editor-toolbar">
+                      <button type="button" data-command="bold">{% trans "Bold" %}</button>
+                      <button type="button" data-command="italic">{% trans "Italic" %}</button>
+                      <button type="button" data-command="insertUnorderedList">{% trans "Bullet List" %}</button>
+                      <button type="button" data-command="insertOrderedList">{% trans "Numbered List" %}</button>
+                      <button type="button" data-command="formatBlock" data-value="p">{% trans "Paragraph" %}</button>
+                      <button type="button" data-command="createLink">{% trans "Link" %}</button>
+                      <input type="url" class="rich-link-input" data-link-url placeholder="https://example.com">
+                      <button type="button" data-command="removeFormat">{% trans "Clear" %}</button>
+                    </div>
+                    <div class="rich-editor-surface" contenteditable="true" data-editor-surface>{{ form.description.value|default:''|safe }}</div>
+                    {{ form.description }}
+                  </div>
+                  {% if form.description.help_text %}<p class="help">{{ form.description.help_text }}</p>{% endif %}
+                  {% for error in form.description.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+                <div class="field field-span-2">
+                  <label class="label">{{ form.tags_text.label }}</label>
+                  <div class="control">{{ form.tags_text }}</div>
+                  {% if form.tags_text.help_text %}<p class="help">{{ form.tags_text.help_text }}</p>{% endif %}
+                  {% for error in form.tags_text.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="section-kicker">{% trans "Publishing Setup" %}</div>
+              <div class="section-title">{% trans "Price, inventory, and live status" %}</div>
+              <p class="section-copy">{% trans "Decide how the product should be priced, how much stock is available, and whether it is ready for customers." %}</p>
+              <div class="form-grid">
+                <div class="field">
+                  <label class="label">{{ form.price.label }}</label>
+                  <div class="control">{{ form.price }}</div>
+                  {% for error in form.price.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+                <div class="field">
+                  <label class="label">{{ form.stock.label }}</label>
+                  <div class="control">{{ form.stock }}</div>
+                  {% for error in form.stock.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+                <div class="field field-span-2">
+                  <label class="label">{{ form.status.label }}</label>
+                  <div class="control">{{ form.status }}</div>
+                  {% for error in form.status.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="section-kicker">{% trans "Visual Assets" %}</div>
+              <div class="section-title">{% trans "Cover and gallery uploads" %}</div>
+              <p class="section-copy">{% trans "Use a strong lead image for cards, then add supporting gallery shots for detail views and customer confidence." %}</p>
+              <div class="asset-grid">
+                <div class="asset-column">
+                  <label class="label">{{ form.image.label }}</label>
+                  <div class="upload-shell">
+                    <label class="upload-card">
+                      <div class="upload-copy">
+                        <span class="upload-kicker">{% trans "Cover Image" %}</span>
+                        <strong>{% trans "Choose a cover image" %}</strong>
+                        <p>{% trans "PNG, JPG, or WEBP. One image for the main product card." %}</p>
+                      </div>
+                      <span class="upload-button">{% trans "Browse Files" %}</span>
+                      {{ form.image }}
+                    </label>
+                    <div class="upload-meta" data-upload-meta="image">{% trans "No file selected yet." %}</div>
+                    <div id="cover-current-preview" class="preview-grid">
+                      {% if edit_product and edit_product.primary_image_url %}
+                        <div class="preview-card">
+                          <div class="media-card-body">
+                            <img src="{{ edit_product.primary_image_url }}" alt="{{ edit_product.name }}">
+                            <span class="preview-label">{% trans "Current cover" %}</span>
+                          </div>
+                          <label class="media-card-footer media-remove">
+                            <input type="checkbox" name="remove_cover_image" value="1">
+                            <span>{% trans "Remove cover image" %}</span>
+                          </label>
+                        </div>
+                      {% else %}
+                        <div class="empty-preview">{% trans "No cover image yet." %}</div>
+                      {% endif %}
+                    </div>
+                    <div id="cover-selected-preview" class="preview-grid"></div>
+                  </div>
+                  <p class="asset-note">{% trans "Uploading a new cover replaces the current one after you save." %}</p>
+                  {% for error in form.image.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+                <div class="asset-column">
+                  <label class="label">{{ form.gallery_images.label }}</label>
+                  <div class="upload-shell">
+                    <label class="upload-card">
+                      <div class="upload-copy">
+                        <span class="upload-kicker">{% trans "Gallery Images" %}</span>
+                        <strong>{% trans "Choose gallery images" %}</strong>
+                        <p>{% trans "Upload multiple images to show angles, details, and context." %}</p>
+                      </div>
+                      <span class="upload-button">{% trans "Browse Files" %}</span>
+                      {{ form.gallery_images }}
+                    </label>
+                    <div class="upload-meta" data-upload-meta="gallery_images">{% trans "No file selected yet." %}</div>
+                    <div id="gallery-current-preview" class="preview-grid">
+                      {% if edit_product %}
+                        {% for image in edit_product.images.all %}
+                          <div class="preview-card">
+                            <div class="media-card-body">
+                              <img src="{{ image.image.url }}" alt="{{ edit_product.name }} {{ forloop.counter }}">
+                              <span class="preview-label">{% trans "Existing" %}</span>
+                            </div>
+                            <label class="media-card-footer media-remove">
+                              <input type="checkbox" name="remove_gallery_images" value="{{ image.id }}">
+                              <span>{% trans "Delete this image" %}</span>
+                            </label>
+                          </div>
+                        {% empty %}
+                          <div class="empty-preview">{% trans "No gallery images yet." %}</div>
+                        {% endfor %}
+                      {% else %}
+                        <div class="empty-preview">{% trans "No gallery images yet." %}</div>
+                      {% endif %}
+                    </div>
+                    <div id="gallery-selected-preview" class="preview-grid"></div>
+                  </div>
+                  <p class="asset-note">{% trans "New gallery images will be added after save. Tick existing images to remove them." %}</p>
+                  {% if form.gallery_images.help_text %}<p class="help">{{ form.gallery_images.help_text }}</p>{% endif %}
+                  {% for error in form.gallery_images.errors %}<p class="help is-danger">{{ error }}</p>{% endfor %}
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside class="editor-side">
+            <div class="editor-side-card">
+              <p class="section-kicker" style="color: rgba(255,255,255,0.72);">{% trans "Publishing Checklist" %}</p>
+              <h2 class="title is-4 mb-2">{% trans "Before you save" %}</h2>
+              <p class="mb-0">{% trans "Use this quick checklist to make the product card, list view, and detail page feel complete on first publish." %}</p>
+              <div class="editor-checklist">
+                <div class="editor-checklist-item">{% trans "Lead with a clear product name and category so cards scan quickly." %}</div>
+                <div class="editor-checklist-item">{% trans "Add one strong cover image and multiple gallery shots for trust." %}</div>
+                <div class="editor-checklist-item">{% trans "Use short paragraphs and lists in the rich text area for readability." %}</div>
+                <div class="editor-checklist-item">{% trans "Double-check price, stock, and status before you publish." %}</div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="section-kicker">{% trans "Actions" %}</div>
+              <div class="section-title">{% trans "Save or continue drafting" %}</div>
+              <p class="section-copy">{% trans "Publish changes now, or save this product and immediately start drafting the next listing." %}</p>
+              <div class="action-bar">
+                <button class="button is-warning" type="submit">{% trans "Save Product" %}</button>
+                {% if edit_product %}<a class="button is-light" href="{% url 'shop:manage_product_new' %}">{% trans "Create Another Product" %}</a>{% endif %}
+              </div>
+            </div>
+          </aside>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="{% static 'js/rich-text-editor.js' %}"></script>
+  <script>
+    function renderImagePreview(inputSelector, containerSelector, multiple, labelText) {
+      const input = document.querySelector(inputSelector);
+      const container = document.querySelector(containerSelector);
+      const meta = document.querySelector('[data-upload-meta="' + inputSelector.replace('input[name="', '').replace('"]', '') + '"]');
+      if (!input || !container) {
+        return;
+      }
+
+      input.addEventListener('change', function () {
+        const files = Array.from(this.files || []);
+        if (!files.length) {
+          if (meta) {
+            meta.textContent = '{% trans "No file selected yet." %}';
+          }
+          return;
+        }
+
+        if (meta) {
+          meta.textContent = multiple ? '{% trans "%(count)s files selected" %}'.replace('%(count)s', files.length) : files[0].name;
+        }
+
+        container.innerHTML = '';
+        files.forEach(function (file, index) {
+          if (!file.type.startsWith('image/')) {
+            return;
+          }
+          const card = document.createElement('div');
+          card.className = 'preview-card';
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          img.onload = function () {
+            URL.revokeObjectURL(img.src);
+          };
+          const tag = document.createElement('span');
+          tag.className = 'preview-label';
+          tag.textContent = multiple ? labelText.replace('%s', index + 1) : labelText;
+          card.appendChild(img);
+          card.appendChild(tag);
+          container.appendChild(card);
+        });
+      });
+    }
+
+    renderImagePreview('input[name="image"]', '#cover-selected-preview', false, '{% trans "New cover" %}');
+    renderImagePreview('input[name="gallery_images"]', '#gallery-selected-preview', true, '{% trans "New image %s" %}');
+    window.initializeRichTextEditors();
+  </script>
+</body>
+</html>
